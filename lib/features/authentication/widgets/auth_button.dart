@@ -26,9 +26,7 @@ class AuthButton extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: icon),
+            Align(alignment: Alignment.centerLeft, child: icon),
             Text(
               text,
               style: const TextStyle(

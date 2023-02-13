@@ -7,9 +7,9 @@ import 'package:kill_tiktok/features/authentication/widgets/auth_button.dart';
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
-  void onSignUpTap (BuildContext context) {
+  void _onSignUpTap(BuildContext context) {
     //pop은 가장 상단에 있는 화면을 현재 화면에서 제거할수 있다.
-     Navigator.of(context).pop();
+    Navigator.of(context).pop();
   }
 
   @override
@@ -38,14 +38,14 @@ class LoginScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               Gaps.v40,
-                            Gaps.v40,
+              Gaps.v40,
               AuthButton(
-                icon:FaIcon(FontAwesomeIcons.user),
-                text: 'Use email & password'),
-                Gaps.v16,
+                  icon: FaIcon(FontAwesomeIcons.user),
+                  text: 'Use email & password'),
+              Gaps.v16,
               AuthButton(
-                icon:FaIcon(FontAwesomeIcons.apple),
-                text: 'Continue with Apple'),
+                  icon: FaIcon(FontAwesomeIcons.apple),
+                  text: 'Continue with Apple'),
             ],
           ),
         ),
@@ -62,7 +62,7 @@ class LoginScreen extends StatelessWidget {
               const Text("Don't have an account?"),
               Gaps.h5,
               GestureDetector(
-                onTap: () => onSignUpTap(context),
+                onTap: () => _onSignUpTap(context),
                 child: Text(
                   'Sign up',
                   style: TextStyle(
