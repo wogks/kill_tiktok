@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kill_tiktok/constants/gaps.dart';
 import 'package:kill_tiktok/features/authentication/widgets/form_button.dart';
+import 'package:kill_tiktok/features/onboarding/interests_screen.dart';
 
 import '../../constants/sizes.dart';
 
@@ -29,8 +30,10 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
     if (_formkey.currentState != null) {
       if (_formkey.currentState!.validate()) {
         _formkey.currentState!.save();
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const InterestScreen()));
       }
-      print(formData.values);
+      //print(formData.values);
     }
   }
 
@@ -39,51 +42,53 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('login'),
+      appBar: AppBar(
+        title: const Text('login'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: Sizes.size36),
+        child: Form(
+          key: _formkey,
+          child: Column(
+            children: [
+              Gaps.v28,
+              TextFormField(
+                onSaved: (newValue) {
+                  if (newValue != null) {
+                    formData['email'] = newValue;
+                  }
+                },
+                decoration: const InputDecoration(hintText: 'Email'),
+                validator: (value) {
+                  return null;
+                },
+              ),
+              Gaps.v16,
+              TextFormField(
+                onSaved: (newValue) {
+                  if (newValue != null) {
+                    formData['password'] = newValue;
+                  }
+                },
+                decoration: const InputDecoration(hintText: 'password'),
+                validator: (value) {
+                  // if(value!.isNotEmpty) {
+                  //   if(value.length<3) {
+                  //     return 'error';
+                  //   }
+                  //   return null;
+                  // }
+                  return null;
+                },
+              ),
+              Gaps.v28,
+              GestureDetector(
+                  onTap: _onSubmitTap,
+                  child: const FormButton(disabled: false)),
+            ],
+          ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Sizes.size36),
-          child: Form(
-              key: _formkey,
-              child: Column(
-                children: [
-                  Gaps.v28,
-                  TextFormField(
-                    onSaved: (newValue) {
-                      if (newValue != null) {
-                        formData['email'] = newValue;
-                      }
-                    },
-                    decoration: InputDecoration(hintText: 'Email'),
-                    validator: (value) {
-                      return null;
-                    },
-                  ),
-                  Gaps.v16,
-                  TextFormField(
-                    onSaved: (newValue) {
-                      if (newValue != null) {
-                        formData['password'] = newValue;
-                      }
-                    },
-                    decoration: InputDecoration(hintText: 'password'),
-                    validator: (value) {
-                      // if(value!.isNotEmpty) {
-                      //   if(value.length<3) {
-                      //     return 'error';
-                      //   }
-                      //   return null;
-                      // }
-                      return null;
-                    },
-                  ),
-                  Gaps.v28,
-                  GestureDetector(
-                      onTap: _onSubmitTap,
-                      child: const FormButton(disabled: false)),
-                ],
-              )),
-        ));
+      ),
+    );
   }
 }
