@@ -30,8 +30,17 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
     if (_formkey.currentState != null) {
       if (_formkey.currentState!.validate()) {
         _formkey.currentState!.save();
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const InterestScreen()));
+        //푸시는 화면위에 새 화면을 쌓는 위젯이다. 로그인 한후 다시 로그인화면으로 못돌아가게 리무브언틸을 써준다
+        Navigator.of(context).pushAndRemoveUntil(
+          //predicate가 false를 리턴하면 해당라우트는 삭제된다, 트루면 해당 라우트는 유지된다.
+
+          MaterialPageRoute(
+            builder: (context) => const InterestScreen(),
+          ),
+          (route) {
+            return false;
+          },
+        );
       }
       //print(formData.values);
     }

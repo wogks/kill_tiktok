@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kill_tiktok/features/onboarding/interests_screen.dart';
+import 'package:kill_tiktok/features/authentication/sign_up_screen.dart';
+import 'package:kill_tiktok/features/main_navigation/main_navigation_screen.dart';
 
 import 'constants/sizes.dart';
 
@@ -29,6 +30,6 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        home: const InterestScreen());
+        home: const MainNavigationScreen());
   }
 }

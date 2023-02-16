@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kill_tiktok/features/main_navigation/main_navigation_screen.dart';
 
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
@@ -45,6 +46,18 @@ class _TutorialScreenState extends State<TutorialScreen> {
         _showinPage = Page.first;
       });
     }
+  }
+  void _onEnterAppTab() {
+    Navigator.of(context).pushAndRemoveUntil(
+          //predicate가 false를 리턴하면 해당라우트는 삭제된다, 트루면 해당 라우트는 유지된다.
+
+          MaterialPageRoute(
+            builder: (context) => const MainNavigationScreen(),
+          ),
+          (route) {
+            return false;
+          },
+        );
   }
 
   @override
@@ -108,10 +121,8 @@ class _TutorialScreenState extends State<TutorialScreen> {
             duration: const Duration(milliseconds: 300),
             opacity: _showinPage == Page.first ? 0 : 1,
             child: CupertinoButton(
-              color: Theme.of(context).primaryColor,
-              child: const Text('Enter the app!'), onPressed: () {
-              
-            },),
+              color: Theme.of(context).primaryColor, onPressed: _onEnterAppTab,
+              child: const Text('Enter the app!'),),
           ),
         ),
       ),

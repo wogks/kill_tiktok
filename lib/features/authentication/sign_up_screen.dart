@@ -55,9 +55,7 @@ class SignUpScreen extends StatelessWidget {
               ),
               Gaps.v16,
               GestureDetector(
-                onTap: () {
-                  
-                },
+                onTap: () {},
                 child: const AuthButton(
                     icon: FaIcon(FontAwesomeIcons.apple),
                     text: 'Continue with Apple'),
