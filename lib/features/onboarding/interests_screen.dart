@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kill_tiktok/constants/gaps.dart';
 import 'package:kill_tiktok/constants/sizes.dart';
+import 'package:kill_tiktok/features/onboarding/tutorial_screen.dart';
 import 'package:kill_tiktok/features/onboarding/widgets/interst_button.dart';
 
 class InterestScreen extends StatefulWidget {
@@ -15,6 +16,11 @@ final _scrollController = ScrollController();
 
 class _InterestScreenState extends State<InterestScreen> {
   bool _showTitle = false;
+
+  void _onNextTap() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const TutorialScreen()));
+  }
 
   void _onScroll() {
     //offset은 얼마나 스크롤했는지 알려준다
@@ -47,9 +53,10 @@ class _InterestScreenState extends State<InterestScreen> {
       appBar: AppBar(
         //움직임에 따라서 투명도를 조절한다.
         title: AnimatedOpacity(
-            opacity: _showTitle ? 1 : 0,
-            duration: const Duration(milliseconds: 300),
-            child: const Text('Choose your interests')),
+          opacity: _showTitle ? 1 : 0,
+          duration: const Duration(milliseconds: 300),
+          child: const Text('Choose your interests'),
+        ),
       ),
       body: Scrollbar(
         controller: _scrollController,
@@ -103,7 +110,9 @@ class _InterestScreenState extends State<InterestScreen> {
             right: Sizes.size24,
           ),
           child: CupertinoButton(
-            onPressed: () {},
+            onPressed: () {
+              _onNextTap();
+            },
             color: Theme.of(context).primaryColor,
             child: const Text('NEXT'),
           ),
