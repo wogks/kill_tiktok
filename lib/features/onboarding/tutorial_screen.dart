@@ -52,7 +52,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
           //predicate가 false를 리턴하면 해당라우트는 삭제된다, 트루면 해당 라우트는 유지된다.
 
           MaterialPageRoute(
-            builder: (context) =>  MainNavigationScreen(),
+            builder: (context) =>  const MainNavigationScreen(),
           ),
           (route) {
             return false;

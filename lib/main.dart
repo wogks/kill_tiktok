@@ -29,6 +29,6 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        home:  MainNavigationScreen());
+        home:  const MainNavigationScreen());
   }
 }
