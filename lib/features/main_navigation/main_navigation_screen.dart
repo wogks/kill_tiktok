@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:kill_tiktok/constants/gaps.dart';
 import 'package:kill_tiktok/constants/sizes.dart';
 import 'package:kill_tiktok/features/main_navigation/widgets/nav_tab.dart';
+import 'package:kill_tiktok/features/main_navigation/widgets/post_video_button.dart';
 import 'package:kill_tiktok/features/main_navigation/widgets/statefull_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -11,16 +13,6 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  final screens =  [
-    StfScreen(key: GlobalKey(),),
-    StfScreen(key: GlobalKey(),),
-    Center(
-      child: Text('container'),
-    ),
-    StfScreen(key: GlobalKey(),),
-    StfScreen(key: GlobalKey(),),
-  ];
-
   int _currentIndex = 0;
 
   void _onTap(int index) {
@@ -29,10 +21,47 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     });
   }
 
+  void _onPostVideoButtonTap() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => Scaffold(
+          appBar: AppBar(
+            title: const Text('record video'),
+          ),
+        ),
+        //모든 화면을 덮는다
+        fullscreenDialog: true,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: screens[_currentIndex],
+      body: Stack(
+        children: [
+          Offstage(
+            offstage: _currentIndex != 0,
+            child: const StfScreen(),
+          ),
+          Offstage(
+            offstage: _currentIndex != 1,
+            child: const StfScreen(),
+          ),
+          Offstage(
+            offstage: _currentIndex != 2,
+            child: const StfScreen(),
+          ),
+          Offstage(
+            offstage: _currentIndex != 3,
+            child: const StfScreen(),
+          ),
+          Offstage(
+            offstage: _currentIndex != 4,
+            child: const StfScreen(),
+          ),
+        ],
+      ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.black,
         child: Padding(
@@ -54,6 +83,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 selectedIcon: FontAwesomeIcons.solidCompass,
                 onTap: () => _onTap(1),
               ),
+              Gaps.h24,
+              GestureDetector(
+                  onTap: _onPostVideoButtonTap, child: PostVideoButton()),
+              Gaps.h24,
               NavTab(
                 text: 'inbox',
                 isSelected: _currentIndex == 3,
