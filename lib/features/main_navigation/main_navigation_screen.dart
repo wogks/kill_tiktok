@@ -4,7 +4,7 @@ import 'package:kill_tiktok/constants/gaps.dart';
 import 'package:kill_tiktok/constants/sizes.dart';
 import 'package:kill_tiktok/features/main_navigation/widgets/nav_tab.dart';
 import 'package:kill_tiktok/features/main_navigation/widgets/post_video_button.dart';
-import 'package:kill_tiktok/features/main_navigation/widgets/statefull_screen.dart';
+import 'package:kill_tiktok/features/videos/video_timeline_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});
@@ -42,23 +42,19 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         children: [
           Offstage(
             offstage: _currentIndex != 0,
-            child: const StfScreen(),
+            child: VideoTimelineScreen(),
           ),
           Offstage(
             offstage: _currentIndex != 1,
-            child: const StfScreen(),
-          ),
-          Offstage(
-            offstage: _currentIndex != 2,
-            child: const StfScreen(),
+            child: Container(),
           ),
           Offstage(
             offstage: _currentIndex != 3,
-            child: const StfScreen(),
+            child: Container(),
           ),
           Offstage(
             offstage: _currentIndex != 4,
-            child: const StfScreen(),
+            child: Container(),
           ),
         ],
       ),
@@ -85,7 +81,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               ),
               Gaps.h24,
               GestureDetector(
-                  onTap: _onPostVideoButtonTap, child: PostVideoButton()),
+                  onTap: _onPostVideoButtonTap, child: const PostVideoButton()),
               Gaps.h24,
               NavTab(
                 text: 'inbox',
