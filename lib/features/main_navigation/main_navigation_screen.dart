@@ -42,7 +42,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         children: [
           Offstage(
             offstage: _currentIndex != 0,
-            child: VideoTimelineScreen(),
+            child: const VideoTimelineScreen(),
           ),
           Offstage(
             offstage: _currentIndex != 1,
