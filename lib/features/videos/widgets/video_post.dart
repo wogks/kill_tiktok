@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kill_tiktok/constants/gaps.dart';
 import 'package:kill_tiktok/constants/sizes.dart';
+import 'package:kill_tiktok/features/videos/widgets/video_button.dart';
+import 'package:marquee/marquee.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -29,6 +31,14 @@ class _VideoPostState extends State<VideoPost>
   final Duration _animationDuration = const Duration(milliseconds: 200);
 
   late final AnimationController _animationController;
+
+  bool _seeMore = false;
+
+  void _onSeeMoreClick() {
+    setState(() {
+      _seeMore = !_seeMore;
+    });
+  }
 
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
@@ -142,8 +152,8 @@ class _VideoPostState extends State<VideoPost>
             left: 10,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
+              children: [
+                const Text(
                   '@yaman.',
                   style: TextStyle(
                       fontSize: Sizes.size20,
@@ -151,13 +161,106 @@ class _VideoPostState extends State<VideoPost>
                       fontWeight: FontWeight.bold),
                 ),
                 Gaps.v10,
-                Text(
+                const Text(
                   'This is my hous in Thailand',
                   style: TextStyle(
                     fontSize: Sizes.size16,
                     color: Colors.white,
                   ),
                 ),
+                Gaps.v10,
+                SizedBox(
+                  width: 300,
+                  child: _seeMore
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            const Text(
+                              'datadatadatadatadatadatadatadatadatadatadatadata',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: Sizes.size16,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            GestureDetector(
+                              onTap: _onSeeMoreClick,
+                              child: const Text(
+                                'See less',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: Sizes.size16,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          ],
+                        )
+                      : Row(
+                          children: [
+                            const Flexible(
+                              child: Text(
+                                'datadatadatadatadatadatadatadatadatadatadatadata',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: Sizes.size16,
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: _onSeeMoreClick,
+                              child: const Text(
+                                "See more",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: Sizes.size16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                ),
+                Gaps.v10,
+                Row(
+                  children: [
+                    const FaIcon(
+                      FontAwesomeIcons.music,
+                      size: 16,
+                      color: Colors.white,
+                    ),
+                    Gaps.h8,
+                    SizedBox(
+                      width: 200,
+                      height: 16,
+                      child: Marquee(
+                          text:
+                              "This text is to long to be shown in just one line",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: Sizes.size16,
+                          )),
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            right: 10,
+            child: Column(
+              children: const [
+                CircleAvatar(
+                  radius: 25,
+                  foregroundImage: NetworkImage(
+                      'http://t1.daumcdn.net/cfile/177954254A2880EA7F'),
+                ),
+                Gaps.v24,
+                VideoButton(icon: FontAwesomeIcons.solidHeart, text: '3m'),
+                Gaps.v24,
+                VideoButton(icon: FontAwesomeIcons.solidComment, text: '402'),
+                Gaps.v24,
+                VideoButton(icon: FontAwesomeIcons.share, text: 'share'),
               ],
             ),
           ),
