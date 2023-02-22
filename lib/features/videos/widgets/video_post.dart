@@ -21,7 +21,7 @@ class _VideoPostState extends State<VideoPost> {
     if (_videoPlayerController.value.isInitialized) {
       if (_videoPlayerController.value.duration ==
           _videoPlayerController.value.position) {
-        widget.onVideoFinished;
+        widget.onVideoFinished();
       }
     }
   }
