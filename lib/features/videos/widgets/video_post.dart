@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:kill_tiktok/constants/gaps.dart';
 import 'package:kill_tiktok/constants/sizes.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -20,6 +21,7 @@ class VideoPost extends StatefulWidget {
 
 class _VideoPostState extends State<VideoPost>
     with SingleTickerProviderStateMixin {
+  //위드에 믹스인을 사용하면 그 클래스를 복사해온다는 뜻이다. 그 클래스의 메서드와 속성을 다 가져온다
   final VideoPlayerController _videoPlayerController =
       VideoPlayerController.asset('assets/videos/video.mp4');
 
@@ -40,6 +42,7 @@ class _VideoPostState extends State<VideoPost>
 
   void _initVideoPlayer() async {
     await _videoPlayerController.initialize();
+    await _videoPlayerController.setLooping(true);
     setState(() {});
     _videoPlayerController.addListener(_onVideoChange);
   }
@@ -49,6 +52,8 @@ class _VideoPostState extends State<VideoPost>
     super.initState();
     _initVideoPlayer();
     _animationController = AnimationController(
+      //브이싱크는 오프스크린의 불필요한 리소스 사용을 막는것이다. 위젯이 안보일때는 애니메이션이 작동하지 않는다. 이걸 사용하려면 SingleTickerProviderStateMixin를 믹스인해야한다.
+      //
       vsync: this,
       lowerBound: 1.0,
       upperBound: 1.5,
@@ -119,7 +124,6 @@ class _VideoPostState extends State<VideoPost>
                       child: child,
                     );
                   },
-
                   child: AnimatedOpacity(
                     opacity: _isPaused ? 1 : 0,
                     duration: _animationDuration,
@@ -131,6 +135,30 @@ class _VideoPostState extends State<VideoPost>
                   ),
                 ),
               ),
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            left: 10,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  '@yaman.',
+                  style: TextStyle(
+                      fontSize: Sizes.size20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
+                Gaps.v10,
+                Text(
+                  'This is my hous in Thailand',
+                  style: TextStyle(
+                    fontSize: Sizes.size16,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
