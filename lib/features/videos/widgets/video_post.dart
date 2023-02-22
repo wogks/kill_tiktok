@@ -56,13 +56,6 @@ class _VideoPostState extends State<VideoPost>
       value: 1.5,
       duration: _animationDuration,
     );
-    _animationController.addListener(
-      () {
-        setState(() {
-          
-        });
-      },
-    );
   }
 
   @override
@@ -115,8 +108,18 @@ class _VideoPostState extends State<VideoPost>
             child: IgnorePointer(
               //클릭 안되게 하는 위젯. 포지션드는 항상 스택의 차일드여야 되서 센터를 감싼다
               child: Center(
-                child: Transform.scale(
-                  scale: _animationController.value,
+                child: AnimatedBuilder(
+                  //애니메이션을 받고 애니메이션의 변화를 감지한다
+                  animation: _animationController,
+                  //애니메이션컨트롤러가 바뀔때마다 빌더부분 메서드를 실행한다한다
+                  builder: (context, child) {
+                    return Transform.scale(
+                      scale: _animationController.value,
+                      //애니메이티드 오파시티를 넘겨준다. animated하고싶은 child
+                      child: child,
+                    );
+                  },
+
                   child: AnimatedOpacity(
                     opacity: _isPaused ? 1 : 0,
                     duration: _animationDuration,
