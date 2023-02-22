@@ -44,6 +44,7 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
   }
 
   Future<void> _onRefresh()async{
+    _onVideoFinished();
     //원래 api자리
     return Future.delayed(const Duration(seconds: 2));
 

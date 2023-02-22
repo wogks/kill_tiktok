@@ -81,7 +81,10 @@ class _VideoPostState extends State<VideoPost>
 
   void _onvisibilityChanged(VisibilityInfo info) {
     //화면이 다 보이고 동영상이 재생이 안되고 있을때 그때 재생시키는 함수. 올리는동안 밑에 동영상은 재생이 안된다.
-    if (info.visibleFraction == 1 && !_videoPlayerController.value.isPlaying) {
+    if (info.visibleFraction == 1 &&
+    //paused 일때 새로고침하면 재생아이콘뜨면서 재생되는 버그를 해결
+     !_isPaused &&
+     !_videoPlayerController.value.isPlaying) {
       _videoPlayerController.play();
     }
   }
