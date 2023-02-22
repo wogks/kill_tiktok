@@ -12,8 +12,8 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
   int _itemCount = 4;
   final PageController _pageController = PageController();
 
-  final _scrollDuration = const Duration(microseconds: 250);
-  final _scrollCurve = Curves.linear;
+  final Duration _scrollDuration = const Duration(milliseconds: 250);
+  final Curve _scrollCurve = Curves.linear;
 
   void _onPageChanged(int page) {
     _pageController.animateToPage(
