@@ -109,6 +109,8 @@ class _VideoPostState extends State<VideoPost>
     }
     //댓글창
     await showModalBottomSheet(
+      //모달 바텀시트의 사이즈를 변경할수 있게 된다
+      isScrollControlled: true,
         //끝부분 둥글게
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(Sizes.size16),

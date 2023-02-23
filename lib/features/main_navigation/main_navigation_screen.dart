@@ -38,6 +38,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //댓글창에서 키보드를 사용해도 화면이 찌그러지지 않음
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           Offstage(
