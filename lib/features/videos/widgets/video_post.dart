@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kill_tiktok/constants/gaps.dart';
 import 'package:kill_tiktok/constants/sizes.dart';
 import 'package:kill_tiktok/features/videos/widgets/video_button.dart';
+import 'package:kill_tiktok/features/videos/widgets/video_comments.dart';
 import 'package:marquee/marquee.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -82,14 +83,14 @@ class _VideoPostState extends State<VideoPost>
   void _onvisibilityChanged(VisibilityInfo info) {
     //화면이 다 보이고 동영상이 재생이 안되고 있을때 그때 재생시키는 함수. 올리는동안 밑에 동영상은 재생이 안된다.
     if (info.visibleFraction == 1 &&
-    //paused 일때 새로고침하면 재생아이콘뜨면서 재생되는 버그를 해결
-     !_isPaused &&
-     !_videoPlayerController.value.isPlaying) {
+        //paused 일때 새로고침하면 재생아이콘뜨면서 재생되는 버그를 해결
+        !_isPaused &&
+        !_videoPlayerController.value.isPlaying) {
       _videoPlayerController.play();
     }
   }
 
-  void _togglePause() {
+  void _ontoglePause() {
     if (_videoPlayerController.value.isPlaying) {
       _videoPlayerController.pause();
       _animationController.reverse();
@@ -100,6 +101,22 @@ class _VideoPostState extends State<VideoPost>
     setState(() {
       _isPaused = !_isPaused;
     });
+  }
+
+  void _onCommentTap(BuildContext context) async {
+    if (_videoPlayerController.value.isPlaying) {
+      _ontoglePause();
+    }
+    //댓글창
+    await showModalBottomSheet(
+        //끝부분 둥글게
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Sizes.size16),
+        ),
+        context: context,
+        builder: (context) => const VideoComments());
+    //모달바텀시트가 퓨처이기때문데 밑에 토글포즈를 한번 더 할수 있다. 그럼 댓글창을 닫으면 동영상이 다시 재생된다
+    _ontoglePause();
   }
 
   @override
@@ -119,7 +136,7 @@ class _VideoPostState extends State<VideoPost>
           Positioned.fill(
             //일시정지
             child: GestureDetector(
-              onTap: _togglePause,
+              onTap: _ontoglePause,
             ),
           ),
           Positioned.fill(
@@ -252,18 +269,22 @@ class _VideoPostState extends State<VideoPost>
             bottom: 20,
             right: 10,
             child: Column(
-              children: const [
-                CircleAvatar(
+              children: [
+                const CircleAvatar(
                   radius: 25,
                   foregroundImage: NetworkImage(
                       'http://t1.daumcdn.net/cfile/177954254A2880EA7F'),
                 ),
                 Gaps.v24,
-                VideoButton(icon: FontAwesomeIcons.solidHeart, text: '3m'),
+                const VideoButton(
+                    icon: FontAwesomeIcons.solidHeart, text: '3m'),
                 Gaps.v24,
-                VideoButton(icon: FontAwesomeIcons.solidComment, text: '402'),
+                GestureDetector(
+                    onTap: () => _onCommentTap(context),
+                    child: const VideoButton(
+                        icon: FontAwesomeIcons.solidComment, text: '402')),
                 Gaps.v24,
-                VideoButton(icon: FontAwesomeIcons.share, text: 'share'),
+                const VideoButton(icon: FontAwesomeIcons.share, text: 'share'),
               ],
             ),
           ),
