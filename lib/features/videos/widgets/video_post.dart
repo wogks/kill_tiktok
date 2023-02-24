@@ -220,7 +220,7 @@ class _VideoPostState extends State<VideoPost>
                           children: [
                             const Flexible(
                               child: Text(
-                                'datadatadatadatadatadatadatadatadatadatadatadata',
+                                'datadatadatadatadatadatatadatadatadatadatadatadata',
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   color: Colors.white,
