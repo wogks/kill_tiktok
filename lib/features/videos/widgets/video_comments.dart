@@ -13,12 +13,13 @@ class VideoComments extends StatefulWidget {
 //이론적으로 방금 코멘트 화면을 새로 푸시 했기때문에 백버튼이 생긴다 새로운 스크린으로 네비게이트 한것이다
 //백버튼 누르면 네비게이트 팝이 된다.
 class _VideoCommentsState extends State<VideoComments> {
+  final ScrollController _scrollController = ScrollController();
   bool _isWriting = false;
   void _onClosePressed() {
     Navigator.of(context).pop();
   }
 
-  void _onBodyTap() {
+  void _stopWriting() {
     FocusScope.of(context).unfocus();
     setState(() {
       _isWriting = false;
@@ -56,52 +57,58 @@ class _VideoCommentsState extends State<VideoComments> {
           ],
         ),
         body: GestureDetector(
-          onTap: _onBodyTap,
+          onTap: _stopWriting,
           child: Stack(
             children: [
-              ListView.separated(
-                padding: const EdgeInsets.symmetric(
-                  vertical: Sizes.size10,
-                  horizontal: Sizes.size16,
-                ),
-                separatorBuilder: (context, index) => Gaps.v20,
-                itemCount: 10,
-                itemBuilder: (context, index) => Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const CircleAvatar(
-                      radius: 18,
-                      child: Text('JH'),
-                    ),
-                    Gaps.h10,
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+              Scrollbar(
+                controller: _scrollController,
+                child: ListView.separated(
+                  padding: const EdgeInsets.only(
+                    top: Sizes.size10,
+                    left: Sizes.size16,
+                    //끝까지 내렸을때 마지막 댓글이 다보이게 해준다
+                    bottom: Sizes.size96 + Sizes.size20,
+                    right: Sizes.size16,
+                  ),
+                  separatorBuilder: (context, index) => Gaps.v20,
+                  itemCount: 10,
+                  itemBuilder: (context, index) => Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const CircleAvatar(
+                        radius: 18,
+                        child: Text('JH'),
+                      ),
+                      Gaps.h10,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'james cheong',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey.shade500),
+                            ),
+                            const Text(
+                                'as;djf asdfbewfasdfbewfasdfbewfasdfbewfasdfbewfasdfbewf sadf wef '),
+                          ],
+                        ),
+                      ),
+                      Gaps.h10,
+                      Column(
                         children: [
+                          FaIcon(FontAwesomeIcons.heart,
+                              color: Colors.grey.shade500),
+                          Gaps.v2,
                           Text(
-                            'james cheong',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey.shade500),
+                            '90.2K',
+                            style: TextStyle(color: Colors.grey.shade500),
                           ),
-                          const Text(
-                              'as;djf asdfbewfasdfbewfasdfbewfasdfbewfasdfbewfasdfbewf sadf wef '),
                         ],
                       ),
-                    ),
-                    Gaps.h10,
-                    Column(
-                      children: [
-                        FaIcon(FontAwesomeIcons.heart,
-                            color: Colors.grey.shade500),
-                        Gaps.v2,
-                        Text(
-                          '90.2K',
-                          style: TextStyle(color: Colors.grey.shade500),
-                        ),
-                      ],
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               Positioned(
@@ -166,7 +173,7 @@ class _VideoCommentsState extends State<VideoComments> {
                                       Gaps.h14,
                                       if (_isWriting)
                                         GestureDetector(
-                                          onTap: _onBodyTap,
+                                          onTap: _stopWriting,
                                           child: FaIcon(
                                               FontAwesomeIcons.circleArrowUp,
                                               color: Theme.of(context)
