@@ -88,6 +88,10 @@ class _VideoPostState extends State<VideoPost>
         !_videoPlayerController.value.isPlaying) {
       _videoPlayerController.play();
     }
+    if (_videoPlayerController.value.isPlaying && info.visibleFraction == 0) {
+      //동영상이 재생되고 있는 상황에서 화면이 보이지않으면(화면 넘어가면 동영상 정지)
+      _ontoglePause();
+    }
   }
 
   void _ontoglePause() {
@@ -109,8 +113,8 @@ class _VideoPostState extends State<VideoPost>
     }
     //댓글창
     await showModalBottomSheet(
-      //모달 바텀시트의 사이즈를 변경할수 있게 된다
-      isScrollControlled: true,
+        //모달 바텀시트의 사이즈를 변경할수 있게 된다
+        isScrollControlled: true,
         //끝부분 둥글게
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(Sizes.size16),
