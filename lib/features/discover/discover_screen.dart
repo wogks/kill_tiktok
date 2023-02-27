@@ -111,7 +111,7 @@ _textEditingController.dispose();
                     overflow: TextOverflow.ellipsis,
                   ),
                   Gaps.v8,
-                  //아래에있는 모든 텍스트가 같은 스타일로 들어간다
+                  //아래에있는 모든 텍스트가 같은 스타일로 들어간다 한번에
                   DefaultTextStyle(
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
