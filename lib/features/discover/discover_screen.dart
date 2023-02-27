@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kill_tiktok/constants/gaps.dart';
@@ -13,8 +14,28 @@ final tabs = [
   "Brands",
 ];
 
-class DiscoverScreen extends StatelessWidget {
+class DiscoverScreen extends StatefulWidget {
   const DiscoverScreen({super.key});
+
+  @override
+  State<DiscoverScreen> createState() => _DiscoverScreenState();
+}
+
+class _DiscoverScreenState extends State<DiscoverScreen> {
+
+  final _textEditingController = TextEditingController();
+void   _onSearchChanged (String value) {}
+
+void _onSearchSubmitted (String value) {}
+
+void _changeTab () {
+  FocusScope.of(context).unfocus();
+}
+@override
+  void dispose() {
+_textEditingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +43,18 @@ class DiscoverScreen extends StatelessWidget {
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
+        //키보드 올라가면 화면 사이즈 바뀌는거 방지,      
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           elevation: 1,
-          title: const Text('Discover'),
+          title: CupertinoSearchTextField(
+
+            controller: _textEditingController,
+            onChanged: _onSearchChanged,
+            onSubmitted: _onSearchSubmitted,
+          ),
           bottom: TabBar(
+            onTap: (value) => _changeTab(),
             //클릭효과 삭제
             splashFactory: NoSplash.splashFactory,
             padding: const EdgeInsets.symmetric(horizontal: Sizes.size16),
@@ -44,6 +73,8 @@ class DiscoverScreen extends StatelessWidget {
         body: TabBarView(
           children: [
             GridView.builder(
+              
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               padding: const EdgeInsets.symmetric(
                   horizontal: Sizes.size6, vertical: Sizes.size6),
               itemCount: 20,
@@ -57,13 +88,17 @@ class DiscoverScreen extends StatelessWidget {
               ),
               itemBuilder: (context, index) => Column(
                 children: [
-                  AspectRatio(
-                    aspectRatio: 9 / 16,
-                    child: FadeInImage.assetNetwork(
-                      placeholder: 'assets/images/1.jpeg',
-                      image:
-                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-17g4GD0tz2O509zGFRQraRj4M46WG_XOqA&usqp=CAU',
-                      fit: BoxFit.cover,
+                  Container(
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(Sizes.size4)),
+                    child: AspectRatio(
+                      aspectRatio: 9 / 16,
+                      child: FadeInImage.assetNetwork(
+                        placeholder: 'assets/images/1.jpeg',
+                        image:
+                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-17g4GD0tz2O509zGFRQraRj4M46WG_XOqA&usqp=CAU',
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                   Gaps.v10,

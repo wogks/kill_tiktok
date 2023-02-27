@@ -18,6 +18,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
           primaryColor: const Color(0xFFE9435A),
+          textSelectionTheme:
+              //쿠퍼티노 텍스트필드는 커서칼라 커스텀이 안되기 때문에 메인 테마설정하는곳에서 한다
+              const TextSelectionThemeData(cursorColor: Color(0xFFE9435A)),
           appBarTheme: const AppBarTheme(
             elevation: 0,
             backgroundColor: Colors.white,
@@ -29,6 +32,6 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        home:  const MainNavigationScreen());
+        home: const MainNavigationScreen());
   }
 }
