@@ -12,8 +12,8 @@ class ActivityScreen extends StatefulWidget {
 
 class _ActivityScreenState extends State<ActivityScreen>
 //tick은 애니메이션의 매 프레인마다 콜백 함수를 호출
-    with
-        SingleTickerProviderStateMixin {
+//애니메이션 사용하려면 이걸 믹스인
+    with SingleTickerProviderStateMixin {
   final List<String> _notifications = List.generate(20, (index) => '${index}h');
 
 //late여야한다 이닛스테이트같은 초기화문에서도 this를 참조할수 있다 this나 다른 인스턴스를 참조하려면 late를 써야한다
@@ -38,38 +38,41 @@ class _ActivityScreenState extends State<ActivityScreen>
     }
   }
 
-final List<Map<String, dynamic>> _tabs = [
+  final List<Map<String, dynamic>> _tabs = [
     {
-"title": "All activity",
-"icon": FontAwesomeIcons.solidMessage,
-},
-{
-"title": "Likes",
-"icon": FontAwesomeIcons.solidHeart,
-},
-{
-"title": "Comments",
-"icon": FontAwesomeIcons.solidComments,
-},
-{
-"title": "Mentions",
-"icon": FontAwesomeIcons.at,
-},
-{
-"title": "Followers",
-"icon": FontAwesomeIcons.solidUser,
-},
-{
-"title": "From TikTok",
-"icon": FontAwesomeIcons.tiktok,
-}
-];
+      "title": "All activity",
+      "icon": FontAwesomeIcons.solidMessage,
+    },
+    {
+      "title": "Likes",
+      "icon": FontAwesomeIcons.solidHeart,
+    },
+    {
+      "title": "Comments",
+      "icon": FontAwesomeIcons.solidComments,
+    },
+    {
+      "title": "Mentions",
+      "icon": FontAwesomeIcons.at,
+    },
+    {
+      "title": "Followers",
+      "icon": FontAwesomeIcons.solidUser,
+    },
+    {
+      "title": "From TikTok",
+      "icon": FontAwesomeIcons.tiktok,
+    }
+  ];
 
-late final Animation<Offset> _pannelAnimation = Tween(
-  begin: Offset(0, -1),
-  end: Offset(0, 0)
-).animate(_animationController);
-
+//하나의 애니메이션 컨트롤러를 사용하고 있다
+  late final Animation<Offset> _pannelAnimation =
+      Tween(begin: const Offset(0, -1), end: const Offset(0, 0))
+          .animate(_animationController);
+  late final Animation<Color?> _barrierAnimation = ColorTween(
+    begin: Colors.transparent,
+    end: Colors.black38,
+  ).animate(_animationController);
 
   @override
   Widget build(BuildContext context) {
@@ -180,6 +183,8 @@ late final Animation<Offset> _pannelAnimation = Tween(
                 ),
             ],
           ),
+           AnimatedModalBarrier(color: _barrierAnimation),
+          //아래로 슬라이드
           SlideTransition(
             position: _pannelAnimation,
             child: Container(
@@ -192,24 +197,25 @@ late final Animation<Offset> _pannelAnimation = Tween(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  for(var tab in _tabs)
-                  ListTile(
-                    title: Row(
-                      children:  [
-                        FaIcon(tab['icon'],
-                            color: Colors.black, size: Sizes.size16),
-                            Gaps.h20,
-                        Text(
-                          tab['title'],
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                  for (var tab in _tabs)
+                    ListTile(
+                      title: Row(
+                        children: [
+                          FaIcon(tab['icon'],
+                              color: Colors.black, size: Sizes.size16),
+                          Gaps.h20,
+                          Text(
+                            tab['title'],
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),
-          )
+          ),
+         
         ],
       ),
     );
