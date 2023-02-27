@@ -10,8 +10,19 @@ class ActivityScreen extends StatefulWidget {
   State<ActivityScreen> createState() => _ActivityScreenState();
 }
 
-class _ActivityScreenState extends State<ActivityScreen> {
+class _ActivityScreenState extends State<ActivityScreen>
+//tick은 애니메이션의 매 프레인마다 콜백 함수를 호출
+    with
+        SingleTickerProviderStateMixin {
   final List<String> _notifications = List.generate(20, (index) => '${index}h');
+
+//late여야한다 이닛스테이트같은 초기화문에서도 this를 참조할수 있다 this나 다른 인스턴스를 참조하려면 late를 써야한다
+  late final AnimationController _animationController = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 200));
+  late final Animation<double> _animation = Tween(
+    begin: 0.0,
+    end: 0.5,
+  ).animate(_animationController);
 
   void _onDismissed(String notification) {
     //옆으로 슬라이드할때 진짜로 지우는 메서드
@@ -19,11 +30,36 @@ class _ActivityScreenState extends State<ActivityScreen> {
     setState(() {});
   }
 
+  void _ontitleTab() {
+    if (_animationController.isCompleted) {
+      _animationController.reverse();
+    } else {
+      _animationController.forward();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('All Activity'),
+        title: GestureDetector(
+          onTap: _ontitleTab,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('All Activity'),
+              Gaps.h5,
+              //
+              RotationTransition(
+                turns: _animation,
+                child: const FaIcon(
+                  FontAwesomeIcons.chevronDown,
+                  size: Sizes.size14,
+                ),
+              )
+            ],
+          ),
+        ),
       ),
       body: ListView(
         children: [
@@ -93,7 +129,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                         style: TextStyle(fontWeight: FontWeight.normal),
                       ),
                       TextSpan(
-                        text: '$notification',
+                        text: notification,
                         style: TextStyle(
                             fontWeight: FontWeight.normal,
                             color: Colors.grey.shade500),
@@ -106,7 +142,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                   size: Sizes.size20,
                 ),
               ),
-            )
+            ),
         ],
       ),
     );
