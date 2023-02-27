@@ -16,6 +16,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'tiktok killer',
         theme: ThemeData(
+          //클릭했을때 스플래시칼라가 없어진다
+          //splashColor: Colors.transparent,
+          //아예 없어진다 색깔이
+          //highlightColor: Colors.transparent,
           scaffoldBackgroundColor: Colors.white,
           primaryColor: const Color(0xFFE9435A),
           textSelectionTheme:
