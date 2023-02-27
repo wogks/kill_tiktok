@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kill_tiktok/features/inbox/activity_screen.dart';
 import 'package:kill_tiktok/features/main_navigation/main_navigation_screen.dart';
 
 import 'constants/sizes.dart';
@@ -36,6 +37,6 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        home: const MainNavigationScreen());
+        home: const ActivityScreen());
   }
 }
