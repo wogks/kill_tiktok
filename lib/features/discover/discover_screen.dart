@@ -41,7 +41,25 @@ class DiscoverScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            for (var tab in tabs)
+            GridView.builder(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: Sizes.size6, vertical: Sizes.size6),
+              itemCount: 20,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                //몇개의 콜롬을 가질건지
+                crossAxisCount: 2,
+                //간격은 얼마나 둘것인지
+                crossAxisSpacing: Sizes.size10,
+                mainAxisSpacing: Sizes.size10,
+                childAspectRatio: 9 / 16,
+              ),
+              itemBuilder: (context, index) => Container(
+                  color: Colors.teal,
+                  child: Center(
+                    child: Text('$index'),
+                  )),
+            ),
+            for (var tab in tabs.skip(1))
               Center(
                 child: Text(tab),
               ),
