@@ -87,6 +87,8 @@ class _ActivityScreenState extends State<ActivityScreen>
         title: GestureDetector(
           onTap: _onToggleAnimations,
           child: Row(
+            //뒤로가기 버튼때문에 가운데 오지 않았던 타이틀이 가운데로 오게 만드는 법
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text('All Activity'),
