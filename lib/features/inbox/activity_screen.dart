@@ -13,8 +13,11 @@ class ActivityScreen extends StatefulWidget {
 class _ActivityScreenState extends State<ActivityScreen>
 //tick은 애니메이션의 매 프레인마다 콜백 함수를 호출
 //애니메이션 사용하려면 이걸 믹스인
-    with SingleTickerProviderStateMixin {
+    with
+        SingleTickerProviderStateMixin {
   final List<String> _notifications = List.generate(20, (index) => '${index}h');
+
+  bool _showBarrier = false;
 
 //late여야한다 이닛스테이트같은 초기화문에서도 this를 참조할수 있다 this나 다른 인스턴스를 참조하려면 late를 써야한다
   late final AnimationController _animationController = AnimationController(
@@ -30,12 +33,15 @@ class _ActivityScreenState extends State<ActivityScreen>
     setState(() {});
   }
 
-  void _ontitleTab() {
+  void _onToggleAnimations() async {
     if (_animationController.isCompleted) {
-      _animationController.reverse();
+      await _animationController.reverse();
     } else {
       _animationController.forward();
     }
+    setState(() {
+      _showBarrier = !_showBarrier;
+    });
   }
 
   final List<Map<String, dynamic>> _tabs = [
@@ -79,7 +85,7 @@ class _ActivityScreenState extends State<ActivityScreen>
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
-          onTap: _ontitleTab,
+          onTap: _onToggleAnimations,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -163,7 +169,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                             fontSize: Sizes.size16),
                         children: [
                           const TextSpan(
-                            text: " upload longer viddeos",
+                            text: " upload longer viddeos ",
                             style: TextStyle(fontWeight: FontWeight.normal),
                           ),
                           TextSpan(
@@ -183,7 +189,12 @@ class _ActivityScreenState extends State<ActivityScreen>
                 ),
             ],
           ),
-           AnimatedModalBarrier(color: _barrierAnimation),
+          if (_showBarrier)
+            AnimatedModalBarrier(
+                //다른곳 누르몀ㄴ 올라감
+                dismissible: true,
+                onDismiss: _onToggleAnimations,
+                color: _barrierAnimation),
           //아래로 슬라이드
           SlideTransition(
             position: _pannelAnimation,
@@ -215,7 +226,6 @@ class _ActivityScreenState extends State<ActivityScreen>
               ),
             ),
           ),
-         
         ],
       ),
     );
