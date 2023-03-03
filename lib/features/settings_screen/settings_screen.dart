@@ -12,18 +12,41 @@ class SettingsScreen extends StatelessWidget {
       body: ListView(
         children: [
           ListTile(
-            //앱정보를 띄운다
-            onTap: () => showAboutDialog(
+            onTap: () async {
+              final date = await showDatePicker(
                 context: context,
-                applicationVersion: '1',
-                applicationLegalese: 'please dont copy me'),
-            title: const Text(
-              'About',
-              style: TextStyle(fontWeight: FontWeight.w600),
-            ),
-            subtitle: const Text('About this app....'),
+                initialDate: DateTime.now(),
+                firstDate: DateTime(1980),
+                lastDate: DateTime(2030),
+              );
+
+              final time = await showTimePicker(
+                context: context,
+                initialTime: TimeOfDay.now(),
+              );
+              print(date);
+              print(time);
+
+              final booking = await showDateRangePicker(
+                context: context,
+                firstDate: DateTime(1980),
+                lastDate: DateTime(2030),
+                builder: (context, child) {
+                  return Theme(
+                    child: child!,
+                    data: ThemeData(
+                        appBarTheme: AppBarTheme(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.black,
+                    )),
+                  );
+                },
+              );
+              print(booking);
+            },
+            title: Text('What is your birthday?'),
           ),
-          const AboutListTile()
+          AboutListTile()
         ],
       ),
     );
