@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -28,10 +29,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: ListView(
         children: [
-          SwitchListTile(value: _notifications, onChanged: _onNoificationsChanged,
-          title: const Text('r가능하면 섭타이틀이랑 이거써라'),),
+          SwitchListTile(
+            value: _notifications,
+            onChanged: _onNoificationsChanged,
+            title: const Text('r가능하면 섭타이틀이랑 이거써라'),
+          ),
           //Switch.adaptive 폰에따라 바뀜
-          CupertinoSwitch(value: _notifications, onChanged: _onNoificationsChanged),
+          CupertinoSwitch(
+              value: _notifications, onChanged: _onNoificationsChanged),
           Checkbox(value: _notifications, onChanged: _onNoificationsChanged),
           Switch(value: _notifications, onChanged: _onNoificationsChanged),
           CheckboxListTile(
@@ -78,7 +83,57 @@ class _SettingsScreenState extends State<SettingsScreen> {
             },
             title: const Text('What is your birthday?'),
           ),
-          const AboutListTile()
+          ListTile(
+            title: const Text('log out (IOS)'),
+            textColor: Colors.red,
+            onTap: () {
+              showCupertinoDialog(
+                context: context,
+                builder: (context) => CupertinoAlertDialog(
+                  title: const Text('r u sure?'),
+                  content: const Text('please dont go'),
+                  actions: [
+                    CupertinoDialogAction(
+                        child: const Text('no'),
+                        //새로운 창을 푸시한 상태라서 팝을 해준다
+                        onPressed: () => Navigator.of(context).pop()),
+                     CupertinoDialogAction(
+                      onPressed: () => Navigator.of(context).pop(),
+                        //빠ㄹ간색
+                        isDestructiveAction: true,
+                        child: const Text('yes')),
+                  ],
+                ),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text('log out (Android)'),
+            textColor: Colors.red,
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  icon: const FaIcon(FontAwesomeIcons.skull),
+                  title: const Text('r u sure?'),
+                  content: const Text('please dont go'),
+                  actions: [
+                    IconButton(
+                        icon: const FaIcon(FontAwesomeIcons.car),
+                        //새로운 창을 푸시한 상태라서 팝을 해준다
+                        onPressed: () => Navigator.of(context).pop()),
+                     TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                        child: const Text('yes')),
+                  ],
+                ),
+              );
+            },
+          ),
+          const AboutListTile(
+            applicationVersion: '1.0',
+            applicationLegalese: 'dont copyme',
+          )
         ],
       ),
     );
