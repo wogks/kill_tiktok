@@ -130,6 +130,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
               );
             },
           ),
+          ListTile(
+            title: const Text('log out (IOS/Bottom)'),
+            textColor: Colors.red,
+            onTap: () {
+              //밑에서 튀어나오고 다른곳을 누르면 없어진다
+              showCupertinoModalPopup(
+                context: context,
+                //마테리얼의 그냥 alert dialog를 함께 사용해도 된다
+                builder: (context) => CupertinoActionSheet(
+                  title: const Text('r u sure?'),
+                  message: const Text('plz dont ggoogogogo'),
+                  actions: [
+                    CupertinoActionSheetAction(
+                      //더 굵게 나온다
+                      isDefaultAction: true,
+                        child: const Text('no'),
+                        //새로운 창을 푸시한 상태라서 팝을 해준다
+                        onPressed: () => Navigator.of(context).pop()),
+                     CupertinoActionSheetAction(
+                      onPressed: () => Navigator.of(context).pop(),
+                        //빠ㄹ간색
+                        isDestructiveAction: true,
+                        child: const Text('yes')),
+                  ],
+                ),
+              );
+            },
+          ),
           const AboutListTile(
             applicationVersion: '1.0',
             applicationLegalese: 'dont copyme',
