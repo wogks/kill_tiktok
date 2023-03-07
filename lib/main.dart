@@ -50,22 +50,3 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class LayoutBuilderCodeLab extends StatelessWidget {
-  const LayoutBuilderCodeLab({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: Container(
-        width: size.width,
-        height: size.height,
-        color: Colors.amber,
-        child: Center(
-          child: Text('${size.width}'),
-        ),
-    
-      ),
-    );
-  }
-}

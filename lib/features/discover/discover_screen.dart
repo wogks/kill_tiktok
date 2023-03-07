@@ -42,7 +42,6 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
     //탭바를 사용하려면 컨트롤러가 있어야하는데 스캐폴드를 컨트롤러로 감싸면서 이 문제를 해결한다
     return DefaultTabController(
       length: tabs.length,
@@ -51,10 +50,14 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           elevation: 1,
-          title: CupertinoSearchTextField(
-            controller: _textEditingController,
-            onChanged: _onSearchChanged,
-            onSubmitted: _onSearchSubmitted,
+          //웹에서 화면이 커질때 크기를 제한한다
+          title: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: Breakpoints.sm),
+            child: CupertinoSearchTextField(
+              controller: _textEditingController,
+              onChanged: _onSearchChanged,
+              onSubmitted: _onSearchSubmitted,
+            ),
           ),
           bottom: TabBar(
             onTap: (value) => _changeTab(),
@@ -108,47 +111,49 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                     Gaps.v10,
                     Text(
                       '${constraints.maxWidth}this is very long captionthis is very long captionthis is very long captionthis is',
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: Sizes.size16 + Sizes.size2,
                           fontWeight: FontWeight.bold),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     Gaps.v8,
-                    //아래에있는 모든 텍스트가 같은 스타일로 들어간다 한번에
-                    if(constraints.maxWidth < 200 || constraints.maxWidth > 250)
-                    DefaultTextStyle(
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey.shade600),
-                      child: Row(
-                        children: [
-                          const CircleAvatar(
-                            radius: 12,
-                            backgroundImage: NetworkImage(
-                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqQkJWuqp6vsgOKFQXjzfT3tWrOTlYXTkvYA&usqp=CAU'),
-                          ),
-                          Gaps.h4,
-                          const Expanded(
-                            child: Text(
-                              'my avatar is goint to asnd vew',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                    //화면이 작아지면 콘테이너가 작아짐, 어느정도 커지면 또 작아짐 이게 포인트
+                    if (constraints.maxWidth < 200 ||
+                        constraints.maxWidth > 250)
+                      //아래에있는 모든 텍스트가 같은 스타일로 들어간다 한번에
+                      DefaultTextStyle(
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey.shade600),
+                        child: Row(
+                          children: [
+                            const CircleAvatar(
+                              radius: 12,
+                              backgroundImage: NetworkImage(
+                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqQkJWuqp6vsgOKFQXjzfT3tWrOTlYXTkvYA&usqp=CAU'),
                             ),
-                          ),
-                          Gaps.h4,
-                          FaIcon(
-                            FontAwesomeIcons.heart,
-                            size: Sizes.size16,
-                            color: Colors.grey.shade600,
-                          ),
-                          Gaps.h2,
-                          const Text(
-                            '2.5M',
-                          ),
-                        ],
+                            Gaps.h4,
+                            const Expanded(
+                              child: Text(
+                                'my avatar is goint to asnd vew',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Gaps.h4,
+                            FaIcon(
+                              FontAwesomeIcons.heart,
+                              size: Sizes.size16,
+                              color: Colors.grey.shade600,
+                            ),
+                            Gaps.h2,
+                            const Text(
+                              '2.5M',
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ),
