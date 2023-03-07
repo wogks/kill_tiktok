@@ -58,7 +58,7 @@ class _VideoPostState extends State<VideoPost>
     _videoPlayerController.addListener(_onVideoChange);
     //k를 입력하면 모든 콘스탄트를 볼수있다
     //kisweb 만약에 퉵이라면
-    if(kIsWeb){
+    if (kIsWeb) {
       //웹에서 바로 비디오플레이를 하려면 소리가 안나야된다. 정책이다
       await _videoPlayerController.setVolume(0);
     }
@@ -89,7 +89,7 @@ class _VideoPostState extends State<VideoPost>
 
   void _onvisibilityChanged(VisibilityInfo info) {
     //모든 스테이트풀에는 마운트 프로퍼티가 있다 마운트가 안됐다 = 사용자들에게 더이상 안보여진다
-    if(!mounted) return;
+    if (!mounted) return;
     //화면이 다 보이고 동영상이 재생이 안되고 있을때 그때 재생시키는 함수. 올리는동안 밑에 동영상은 재생이 안된다.
     if (info.visibleFraction == 1 &&
         //paused 일때 새로고침하면 재생아이콘뜨면서 재생되는 버그를 해결

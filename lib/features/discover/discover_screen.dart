@@ -4,6 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kill_tiktok/constants/gaps.dart';
 import 'package:kill_tiktok/constants/sizes.dart';
 
+import '../../constants/break_point.dart';
+
 final tabs = [
   "Top",
   "Users",
@@ -39,6 +41,8 @@ _textEditingController.dispose();
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     //탭바를 사용하려면 컨트롤러가 있어야하는데 스캐폴드를 컨트롤러로 감싸면서 이 문제를 해결한다
     return DefaultTabController(
       length: tabs.length,
@@ -78,9 +82,9 @@ _textEditingController.dispose();
               padding: const EdgeInsets.symmetric(
                   horizontal: Sizes.size6, vertical: Sizes.size6),
               itemCount: 20,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
                 //몇개의 콜롬을 가질건지
-                crossAxisCount: 2,
+                crossAxisCount: width > Breakpoints.md ? 5 : 2,
                 //간격은 얼마나 둘것인지
                 crossAxisSpacing: Sizes.size10,
                 mainAxisSpacing: Sizes.size10,
