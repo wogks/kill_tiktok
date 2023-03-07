@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:kill_tiktok/features/authentication/sign_up_screen.dart';
 import 'package:kill_tiktok/features/main_navigation/main_navigation_screen.dart';
 
 import 'constants/sizes.dart';
 
-void main() {
+void main() async{
+  //플러터 엔진과 프레임워크, 플랫폼을 묶는 접착제 안드와 애플은 다른 환경이다. 통신을 위해 안정성을 보장해야 하는데
+  WidgetsFlutterBinding.ensureInitialized();
+  //화면 눕히는거 금지시키는법
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  // 상태표시줄 색 바꿔주는법 원하는 페이지에만 사용할수있다
+  // SystemChrome.setSystemUIOverlayStyle(
+  //   SystemUiOverlayStyle.light
+  // );
   runApp(const MyApp());
 }
 
@@ -36,6 +46,6 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        home: const MainNavigationScreen());
+        home: const SignUpScreen());
   }
 }
