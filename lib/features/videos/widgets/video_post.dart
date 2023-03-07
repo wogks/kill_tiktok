@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kill_tiktok/constants/gaps.dart';
@@ -54,8 +55,14 @@ class _VideoPostState extends State<VideoPost>
   void _initVideoPlayer() async {
     await _videoPlayerController.initialize();
     await _videoPlayerController.setLooping(true);
-    setState(() {});
     _videoPlayerController.addListener(_onVideoChange);
+    //k를 입력하면 모든 콘스탄트를 볼수있다
+    //kisweb 만약에 퉵이라면
+    if(kIsWeb){
+      //웹에서 바로 비디오플레이를 하려면 소리가 안나야된다. 정책이다
+      await _videoPlayerController.setVolume(0);
+    }
+    setState(() {});
   }
 
   @override

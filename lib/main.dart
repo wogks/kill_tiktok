@@ -5,7 +5,7 @@ import 'package:kill_tiktok/features/main_navigation/main_navigation_screen.dart
 
 import 'constants/sizes.dart';
 
-void main() async{
+void main() async {
   //플러터 엔진과 프레임워크, 플랫폼을 묶는 접착제 안드와 애플은 다른 환경이다. 통신을 위해 안정성을 보장해야 하는데
   WidgetsFlutterBinding.ensureInitialized();
   //화면 눕히는거 금지시키는법
@@ -46,6 +46,6 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        home: const SignUpScreen());
+        home: const MainNavigationScreen());
   }
 }
