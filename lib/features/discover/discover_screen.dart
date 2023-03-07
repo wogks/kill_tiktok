@@ -24,18 +24,18 @@ class DiscoverScreen extends StatefulWidget {
 }
 
 class _DiscoverScreenState extends State<DiscoverScreen> {
-
   final _textEditingController = TextEditingController();
-void   _onSearchChanged (String value) {}
+  void _onSearchChanged(String value) {}
 
-void _onSearchSubmitted (String value) {}
+  void _onSearchSubmitted(String value) {}
 
-void _changeTab () {
-  FocusScope.of(context).unfocus();
-}
-@override
+  void _changeTab() {
+    FocusScope.of(context).unfocus();
+  }
+
+  @override
   void dispose() {
-_textEditingController.dispose();
+    _textEditingController.dispose();
     super.dispose();
   }
 
@@ -47,12 +47,11 @@ _textEditingController.dispose();
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
-        //키보드 올라가면 화면 사이즈 바뀌는거 방지,      
+        //키보드 올라가면 화면 사이즈 바뀌는거 방지,
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           elevation: 1,
           title: CupertinoSearchTextField(
-
             controller: _textEditingController,
             onChanged: _onSearchChanged,
             onSubmitted: _onSearchSubmitted,
@@ -77,12 +76,11 @@ _textEditingController.dispose();
         body: TabBarView(
           children: [
             GridView.builder(
-              
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               padding: const EdgeInsets.symmetric(
                   horizontal: Sizes.size6, vertical: Sizes.size6),
               itemCount: 20,
-              gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 //몇개의 콜롬을 가질건지
                 crossAxisCount: width > Breakpoints.md ? 5 : 2,
                 //간격은 얼마나 둘것인지
@@ -90,65 +88,69 @@ _textEditingController.dispose();
                 mainAxisSpacing: Sizes.size10,
                 childAspectRatio: 9 / 21,
               ),
-              itemBuilder: (context, index) => Column(
-                children: [
-                  Container(
-                    clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(Sizes.size4)),
-                    child: AspectRatio(
-                      aspectRatio: 9 / 16,
-                      child: FadeInImage.assetNetwork(
-                        placeholder: 'assets/images/1.jpeg',
-                        image:
-                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-17g4GD0tz2O509zGFRQraRj4M46WG_XOqA&usqp=CAU',
-                        fit: BoxFit.cover,
+              itemBuilder: (context, index) => LayoutBuilder(
+                builder: (context, constraints) => Column(
+                  children: [
+                    Container(
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(Sizes.size4)),
+                      child: AspectRatio(
+                        aspectRatio: 9 / 16,
+                        child: FadeInImage.assetNetwork(
+                          placeholder: 'assets/images/1.jpeg',
+                          image:
+                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-17g4GD0tz2O509zGFRQraRj4M46WG_XOqA&usqp=CAU',
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                  ),
-                  Gaps.v10,
-                  const Text(
-                    'this is very long captionthis is very long captionthis is very long captionthis is ',
-                    style: TextStyle(
-                        fontSize: Sizes.size16 + Sizes.size2,
-                        fontWeight: FontWeight.bold),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Gaps.v8,
-                  //아래에있는 모든 텍스트가 같은 스타일로 들어간다 한번에
-                  DefaultTextStyle(
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey.shade600),
-                    child: Row(
-                      children: [
-                        const CircleAvatar(
-                          radius: 12,
-                          backgroundImage: NetworkImage(
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqQkJWuqp6vsgOKFQXjzfT3tWrOTlYXTkvYA&usqp=CAU'),
-                        ),
-                        Gaps.h4,
-                        const Expanded(
-                          child: Text(
-                            'my avatar is goint to asnd vew',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        Gaps.h4,
-                        FaIcon(
-                          FontAwesomeIcons.heart,
-                          size: Sizes.size16,
-                          color: Colors.grey.shade600,
-                        ),
-                        Gaps.h2,
-                        const Text(
-                          '2.5M',
-                        ),
-                      ],
+                    Gaps.v10,
+                    Text(
+                      '${constraints.maxWidth}this is very long captionthis is very long captionthis is very long captionthis is',
+                      style: TextStyle(
+                          fontSize: Sizes.size16 + Sizes.size2,
+                          fontWeight: FontWeight.bold),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                ],
+                    Gaps.v8,
+                    //아래에있는 모든 텍스트가 같은 스타일로 들어간다 한번에
+                    if(constraints.maxWidth < 200 || constraints.maxWidth > 250)
+                    DefaultTextStyle(
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey.shade600),
+                      child: Row(
+                        children: [
+                          const CircleAvatar(
+                            radius: 12,
+                            backgroundImage: NetworkImage(
+                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqQkJWuqp6vsgOKFQXjzfT3tWrOTlYXTkvYA&usqp=CAU'),
+                          ),
+                          Gaps.h4,
+                          const Expanded(
+                            child: Text(
+                              'my avatar is goint to asnd vew',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Gaps.h4,
+                          FaIcon(
+                            FontAwesomeIcons.heart,
+                            size: Sizes.size16,
+                            color: Colors.grey.shade600,
+                          ),
+                          Gaps.h2,
+                          const Text(
+                            '2.5M',
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             for (var tab in tabs.skip(1))

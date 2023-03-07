@@ -49,3 +49,23 @@ class MyApp extends StatelessWidget {
         home: const MainNavigationScreen());
   }
 }
+
+class LayoutBuilderCodeLab extends StatelessWidget {
+  const LayoutBuilderCodeLab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return Scaffold(
+      body: Container(
+        width: size.width,
+        height: size.height,
+        color: Colors.amber,
+        child: Center(
+          child: Text('${size.width}'),
+        ),
+    
+      ),
+    );
+  }
+}
