@@ -50,7 +50,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           elevation: 1,
-          //웹에서 화면이 커질때 크기를 제한한다
+          //웹에서 화면이 커질때 크기를 제한한다 컨테이너에도 이 옵션이 있다
           title: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: Breakpoints.sm),
             child: CupertinoSearchTextField(

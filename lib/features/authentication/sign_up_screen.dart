@@ -4,6 +4,7 @@ import 'package:kill_tiktok/constants/gaps.dart';
 import 'package:kill_tiktok/constants/sizes.dart';
 import 'package:kill_tiktok/features/authentication/user_name_screen.dart';
 import 'package:kill_tiktok/features/authentication/widgets/auth_button.dart';
+import 'package:kill_tiktok/utils.dart';
 
 import 'login_screen.dart';
 
@@ -42,14 +43,17 @@ class SignUpScreen extends StatelessWidget {
                     ),
                   ),
                   Gaps.v20,
-                  const Text(
-                    'Create a profile, follow other accounts, make yout own videos, and more',
-                    style: TextStyle(
-                      fontSize: Sizes.size16,
-                      color: Colors.black45,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                   Opacity(
+                    opacity: 0.7,
+                     child: Text(
+                      'Create a profile, follow other accounts, make yout own videos, and more',
+                      style: TextStyle(
+                        fontSize: Sizes.size16,
+                        color: isDarkMode(context) ? Colors.grey.shade300 : Colors.black45,
+                      ),
+                      textAlign: TextAlign.center,
+                                     ),
+                   ),
                   Gaps.v40,
                   if (orientation == Orientation.portrait)
                     //제스처디텍터 두개를 모두 콜렉션if로 넣으려면 리스트로 감싸고 ...을 쓴다
@@ -98,7 +102,7 @@ class SignUpScreen extends StatelessWidget {
           bottomNavigationBar: BottomAppBar(
             elevation: 1,
             //아주 옅은 검정
-            color: Colors.grey.shade50,
+            color: isDarkMode(context) ? null : Colors.grey.shade50,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: Sizes.size32),
               child: Row(

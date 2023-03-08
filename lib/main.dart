@@ -25,7 +25,21 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'tiktok killer',
+        //폰의 기기가 다크모드면 앱도 다크모드로 변한다
+        themeMode: ThemeMode.system,
+        darkTheme: ThemeData(
+          bottomAppBarTheme: BottomAppBarTheme(
+            color: Colors.grey.shade800
+          ),
+          scaffoldBackgroundColor: Colors.black,
+          primaryColor: const Color(0xFFE9435A),
+          brightness: Brightness.dark
+        ),
         theme: ThemeData(
+          bottomAppBarTheme: BottomAppBarTheme(
+            color: Colors.grey.shade50
+          ),
+          brightness: Brightness.light,
           //클릭했을때 스플래시칼라가 없어진다
           //splashColor: Colors.transparent,
           //아예 없어진다 색깔이
@@ -46,7 +60,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        home: const MainNavigationScreen());
+        home: const SignUpScreen());
   }
 }
 
