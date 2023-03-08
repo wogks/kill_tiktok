@@ -36,6 +36,13 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark
         ),
         theme: ThemeData(
+          textTheme: const TextTheme(
+            headlineLarge: TextStyle(
+              fontSize: Sizes.size24,
+              fontWeight: FontWeight.w700,
+              color: Colors.black,
+            ) 
+          ),
           bottomAppBarTheme: BottomAppBarTheme(
             color: Colors.grey.shade50
           ),
