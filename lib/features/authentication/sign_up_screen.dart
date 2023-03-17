@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kill_tiktok/constants/gaps.dart';
 import 'package:kill_tiktok/constants/sizes.dart';
+import 'package:kill_tiktok/features/authentication/email_screen.dart';
 import 'package:kill_tiktok/features/authentication/user_name_screen.dart';
 import 'package:kill_tiktok/features/authentication/widgets/auth_button.dart';
 import 'package:kill_tiktok/utils.dart';
@@ -9,35 +11,36 @@ import 'package:kill_tiktok/utils.dart';
 import 'login_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
+  static String routeName = '/';
   const SignUpScreen({super.key});
 
   void _onLoginTap(BuildContext context) {
     //push는 화면위에 화면을 쌓는거라 계속 누르면 무한 뒤로가기가 된다.
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const LoginScreen()));
+   context.push(LoginScreen.routeName);
   }
 
   void _onEmailTap(BuildContext context) {
-    Navigator.of(context).push(
-      PageRouteBuilder(
-          transitionDuration: const Duration(seconds: 1),
-          reverseTransitionDuration: const Duration(seconds: 1),
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              const UsernameScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            final offsetAnimation =
-                Tween(begin: const Offset(0, -1), end: Offset.zero)
-                    .animate(animation);
-                    final opacityAnimation = Tween(
-                      begin: 0.5,
-                      end: 1.0
-                    ).animate(animation);
-            return SlideTransition(
-              position: offsetAnimation,
-              child: FadeTransition(opacity: opacityAnimation, child: child),
-            );
-          }),
-    );
+    // Navigator.of(context).push(
+    //   PageRouteBuilder(
+    //       transitionDuration: const Duration(seconds: 1),
+    //       reverseTransitionDuration: const Duration(seconds: 1),
+    //       pageBuilder: (context, animation, secondaryAnimation) =>
+    //           const UsernameScreen(),
+    //       transitionsBuilder: (context, animation, secondaryAnimation, child) {
+    //         final offsetAnimation =
+    //             Tween(begin: const Offset(0, -1), end: Offset.zero)
+    //                 .animate(animation);
+    //                 final opacityAnimation = Tween(
+    //                   begin: 0.5,
+    //                   end: 1.0
+    //                 ).animate(animation);
+    //         return SlideTransition(
+    //           position: offsetAnimation,
+    //           child: FadeTransition(opacity: opacityAnimation, child: child),
+    //         );
+    //       }),
+    // );
+context.push(EmailScreen.routeName);
   }
 
   @override
