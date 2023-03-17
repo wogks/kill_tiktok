@@ -18,8 +18,26 @@ class SignUpScreen extends StatelessWidget {
   }
 
   void _onEmailTap(BuildContext context) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const UsernameScreen()));
+    Navigator.of(context).push(
+      PageRouteBuilder(
+          transitionDuration: const Duration(seconds: 1),
+          reverseTransitionDuration: const Duration(seconds: 1),
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              const UsernameScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            final offsetAnimation =
+                Tween(begin: const Offset(0, -1), end: Offset.zero)
+                    .animate(animation);
+                    final opacityAnimation = Tween(
+                      begin: 0.5,
+                      end: 1.0
+                    ).animate(animation);
+            return SlideTransition(
+              position: offsetAnimation,
+              child: FadeTransition(opacity: opacityAnimation, child: child),
+            );
+          }),
+    );
   }
 
   @override
@@ -43,17 +61,19 @@ class SignUpScreen extends StatelessWidget {
                     ),
                   ),
                   Gaps.v20,
-                   Opacity(
+                  Opacity(
                     opacity: 0.7,
-                     child: Text(
+                    child: Text(
                       'Create a profile, follow other accounts, make yout own videos, and more',
                       style: TextStyle(
                         fontSize: Sizes.size16,
-                        color: isDarkMode(context) ? Colors.grey.shade300 : Colors.black45,
+                        color: isDarkMode(context)
+                            ? Colors.grey.shade300
+                            : Colors.black45,
                       ),
                       textAlign: TextAlign.center,
-                                     ),
-                   ),
+                    ),
+                  ),
                   Gaps.v40,
                   if (orientation == Orientation.portrait)
                     //제스처디텍터 두개를 모두 콜렉션if로 넣으려면 리스트로 감싸고 ...을 쓴다
