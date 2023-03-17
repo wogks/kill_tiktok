@@ -6,7 +6,8 @@ import 'package:kill_tiktok/features/settings_screen/settings_screen.dart';
 import 'package:kill_tiktok/features/users/widgets/persistant_tabbar.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  const UserProfileScreen({super.key});
+  final String usename;
+  const UserProfileScreen({super.key, required this.usename});
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -29,7 +30,7 @@ Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Setting
             return [
               //앱바같지만 스크롤이 가능하다
               SliverAppBar(
-                title: const Text('wogks27'),
+                title: Text(widget.usename),
                 actions: [
                   IconButton(
                     onPressed: _onGearPressed,
