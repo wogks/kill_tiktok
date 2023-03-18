@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kill_tiktok/features/authentication/email_screen.dart';
-import 'package:kill_tiktok/features/authentication/login_screen.dart';
-import 'package:kill_tiktok/features/authentication/sign_up_screen.dart';
-import 'package:kill_tiktok/features/authentication/user_name_screen.dart';
-import 'package:kill_tiktok/features/main_navigation/main_navigation_screen.dart';
 import 'package:kill_tiktok/router.dart';
 
 import 'constants/sizes.dart';

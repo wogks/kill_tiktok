@@ -6,8 +6,9 @@ import 'package:kill_tiktok/features/settings_screen/settings_screen.dart';
 import 'package:kill_tiktok/features/users/widgets/persistant_tabbar.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  final String usename;
-  const UserProfileScreen({super.key, required this.usename});
+  final String username;
+  final String tab;
+  const UserProfileScreen({super.key, required this.username, required this.tab});
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -22,6 +23,7 @@ Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Setting
   Widget build(BuildContext context) {
     return SafeArea(
       child: DefaultTabController(
+        initialIndex: widget.tab == 'likes'?1:0,
         length: 2,
         //커스텀스크롤뷰 대신에 네스티드스크롤뷰를 사용하면 스크롤뷰 두개가 있는 페이지를 잘 쓸수있다.
         child: NestedScrollView(
@@ -30,7 +32,7 @@ Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Setting
             return [
               //앱바같지만 스크롤이 가능하다
               SliverAppBar(
-                title: Text(widget.usename),
+                title: Text(widget.username),
                 actions: [
                   IconButton(
                     onPressed: _onGearPressed,
@@ -53,9 +55,9 @@ Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Setting
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          '@재한',
-                          style: TextStyle(
+                        Text(
+                          '@${widget.username}',
+                          style: const TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: Sizes.size18),
                         ),

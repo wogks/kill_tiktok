@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:kill_tiktok/constants/gaps.dart';
 import 'package:kill_tiktok/constants/sizes.dart';
 import 'package:kill_tiktok/features/authentication/email_screen.dart';
-import 'package:kill_tiktok/features/authentication/user_name_screen.dart';
 import 'package:kill_tiktok/features/authentication/widgets/auth_button.dart';
 import 'package:kill_tiktok/utils.dart';
 
