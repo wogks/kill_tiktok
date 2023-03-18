@@ -3,14 +3,16 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kill_tiktok/constants/gaps.dart';
 import 'package:kill_tiktok/constants/sizes.dart';
-import 'package:kill_tiktok/features/authentication/email_screen.dart';
+import 'package:kill_tiktok/features/authentication/user_name_screen.dart';
+
 import 'package:kill_tiktok/features/authentication/widgets/auth_button.dart';
 import 'package:kill_tiktok/utils.dart';
 
 import 'login_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
-  static String routeName = '/';
+  static String routeURL = '/';
+  static String routeName = 'signUp';
   const SignUpScreen({super.key});
 
   void _onLoginTap(BuildContext context) {
@@ -39,7 +41,7 @@ class SignUpScreen extends StatelessWidget {
     //         );
     //       }),
     // );
-context.push(EmailScreen.routeName);
+context.pushNamed(UsernameScreen.routeName);
   }
 
   @override
