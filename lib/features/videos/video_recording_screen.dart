@@ -11,12 +11,32 @@ class VideoRecordingScreen extends StatefulWidget {
   State<VideoRecordingScreen> createState() => _VideoRecordingScreenState();
 }
 
-class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
+class _VideoRecordingScreenState extends State<VideoRecordingScreen>
+//애니메이션이 두개라서 싱글말고 그냥 티커프로바이더
+    with
+        TickerProviderStateMixin {
   bool _hasperMission = false;
   bool _isSelfieMode = false;
   late FlashMode _flashMode;
   //카메라를 초기화시키기 위해 컨ㅌ롤러를 사용한다
   late CameraController _cameraController;
+
+  //컨트롤러를 만들고
+  late final AnimationController _buttonAnimationController =
+      AnimationController(
+          vsync: this, duration: const Duration(milliseconds: 200));
+  //애니메이션을 만든다
+  late final Animation<double> _buttonAnimation =
+      Tween(begin: 1.0, end: 1.3).animate(_buttonAnimationController);
+
+  late final AnimationController _progressAnimationController =
+      AnimationController(
+    vsync: this,
+    duration: const Duration(seconds: 10),
+    //애니매이션 밸류를 0에서 1사이로 하고싶다, 10초동안 0에서 1로간다
+    upperBound: 1.0,
+    lowerBound: 0.0,
+  );
 
   Future<void> initCamera() async {
     //폰에 몇개의 카메라가 있는지 확인
@@ -50,6 +70,16 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
   void initState() {
     super.initState();
     initPermissions();
+    _progressAnimationController.addListener(() {
+      //매 슈머마이크로세컨마다 10초동안(프로그레스 컨트롤러의 듀레이션) 밸류가 바뀐걸 알려준다
+      setState(() {});
+      //리스너는 우리에게 밸류가 끝난걸 알려준다
+      _progressAnimationController.addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          _stopRecording();
+        }
+      });
+    });
   }
 
   Future<void> toggleSelfieMode() async {
@@ -63,6 +93,18 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
     await _cameraController.setFlashMode(newFlashMode);
     _flashMode = newFlashMode;
     setState(() {});
+  }
+
+  void _startRecording(TapDownDetails _) {
+    _buttonAnimationController.forward();
+    _progressAnimationController.forward();
+    print('start');
+  }
+
+  void _stopRecording() {
+    _buttonAnimationController.reverse();
+    _progressAnimationController.reset();
+    print('stop');
   }
 
   @override
@@ -103,26 +145,67 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
                         ),
                         Gaps.v10,
                         IconButton(
-                          color: _flashMode == FlashMode.off ? Colors.yellow : Colors.white,
+                          color: _flashMode == FlashMode.off
+                              ? Colors.yellow
+                              : Colors.white,
                           onPressed: () => setFlashMode(FlashMode.off),
                           icon: const Icon(Icons.flash_off_rounded),
                         ),
                         IconButton(
-                          color: _flashMode == FlashMode.always ? Colors.yellow : Colors.white,
+                          color: _flashMode == FlashMode.always
+                              ? Colors.yellow
+                              : Colors.white,
                           onPressed: () => setFlashMode(FlashMode.always),
                           icon: const Icon(Icons.flash_on_rounded),
                         ),
                         IconButton(
-                          color: _flashMode == FlashMode.auto ? Colors.yellow : Colors.white,
+                          color: _flashMode == FlashMode.auto
+                              ? Colors.yellow
+                              : Colors.white,
                           onPressed: () => setFlashMode(FlashMode.auto),
                           icon: const Icon(Icons.flash_auto_rounded),
                         ),
                         IconButton(
-                          color: _flashMode == FlashMode.torch ? Colors.yellow : Colors.white,
+                          color: _flashMode == FlashMode.torch
+                              ? Colors.yellow
+                              : Colors.white,
                           onPressed: () => setFlashMode(FlashMode.torch),
                           icon: const Icon(Icons.flashlight_on_rounded),
                         ),
                       ],
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 10,
+                    child: GestureDetector(
+                      onTapDown: _startRecording,
+                      //탭업에는 디테일이 필요한데 여기서 넣어줌으로서 다른곳에서 디테일없이 다 불러올수있다
+                      onTapUp: (details) => _stopRecording(),
+                      //애니메이션을 만들어준다
+                      child: ScaleTransition(
+                        scale: _buttonAnimation,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              width: Sizes.size60 + Sizes.size10,
+                              height: Sizes.size60 + Sizes.size10,
+                              child: CircularProgressIndicator(
+                                color: Colors.red,
+                                strokeWidth: 6,
+                                value: _progressAnimationController.value,
+                              ),
+                            ),
+                            Container(
+                              width: Sizes.size60,
+                              height: Sizes.size60,
+                              decoration: BoxDecoration(
+                                  color: Colors.red.shade400,
+                                  shape: BoxShape.circle),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ],
