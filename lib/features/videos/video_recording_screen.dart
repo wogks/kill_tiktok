@@ -13,8 +13,9 @@ class VideoRecordingScreen extends StatefulWidget {
 
 class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
   bool _hasperMission = false;
+  bool _isSelfieMode = false;
   //카메라를 초기화시키기 위해 컨ㅌ롤러를 사용한다
-  late final CameraController _cameraController;
+  late CameraController _cameraController;
 
   Future<void> initCamera() async {
     //폰에 몇개의 카메라가 있는지 확인
@@ -22,8 +23,8 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
     if (cameras.isEmpty) {
       return;
     }
-    _cameraController =
-        CameraController(cameras[0], ResolutionPreset.ultraHigh);
+    _cameraController = CameraController(
+        cameras[_isSelfieMode ? 1 : 0], ResolutionPreset.ultraHigh);
 
     await _cameraController.initialize();
   }
@@ -46,6 +47,13 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
   void initState() {
     super.initState();
     initPermissions();
+  }
+
+  Future<void> toggleSelfieMode() async {
+    _isSelfieMode = !_isSelfieMode;
+    //실제로 카메라를 보여주기전에 초기화해야함
+    await initCamera();
+    setState(() {});
   }
 
   @override
@@ -73,6 +81,15 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
                 children: [
                   CameraPreview(
                     _cameraController,
+                  ),
+                  Positioned(
+                    top: Sizes.size20,
+                    left: Sizes.size20,
+                    child: IconButton(
+                      color: Colors.white,
+                      onPressed: toggleSelfieMode,
+                      icon: const Icon(Icons.cameraswitch),
+                    ),
                   ),
                 ],
               ),
