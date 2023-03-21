@@ -17,7 +17,9 @@ class VideoRecordingScreen extends StatefulWidget {
 class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 //애니메이션이 두개라서 싱글말고 그냥 티커프로바이더
     with
-        TickerProviderStateMixin {
+        TickerProviderStateMixin,
+        //라이프사이클 확인용
+        WidgetsBindingObserver {
   bool _hasperMission = false;
   bool _isSelfieMode = false;
   late FlashMode _flashMode;
@@ -58,6 +60,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     await _cameraController.prepareForVideoRecording();
     //카메라가 가진 플래쉬모드의 값을 가져온다
     _flashMode = _cameraController.value.flashMode;
+    setState(() {});
   }
 
   Future<void> initPermissions() async {
@@ -78,6 +81,8 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   void initState() {
     super.initState();
     initPermissions();
+    //lifcycle check
+    WidgetsBinding.instance.addObserver(this);
     _progressAnimationController.addListener(() {
       //매 슈머마이크로세컨마다 10초동안(프로그레스 컨트롤러의 듀레이션) 밸류가 바뀐걸 알려준다
       setState(() {});
@@ -148,6 +153,20 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     _cameraController.dispose();
     _progressAnimationController.dispose();
     super.dispose();
+  }
+
+  //라이프사이클이 바뀌었을때(앱이 백그라운드로 갔을때 cameracontroller 처리)
+  //앱보다 권한창이 먼저 실행이 되면 에러가 생긴다(카메라컨트롤러가 초기화가 안되어 있는데 불러버림)
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (!_hasperMission) return;
+    if (!_cameraController.value.isInitialized) return;
+    print(state);
+    if (state == AppLifecycleState.inactive) {
+      _cameraController.dispose();
+    } else if (state == AppLifecycleState.resumed) {
+      initCamera();
+    }
   }
 
   @override
