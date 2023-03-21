@@ -8,7 +8,9 @@ import 'package:video_player/video_player.dart';
 
 class VideoPreviewScreen extends StatefulWidget {
   final XFile video;
-  const VideoPreviewScreen({super.key, required this.video});
+  final bool isPicked;
+  const VideoPreviewScreen(
+      {super.key, required this.video, required this.isPicked});
 
   @override
   State<VideoPreviewScreen> createState() => _VideoPreviewScreenState();
@@ -49,11 +51,13 @@ class _VideoPreviewScreenState extends State<VideoPreviewScreen> {
       appBar: AppBar(
         title: const Text('PreviewVideo'),
         actions: [
-          IconButton(
-              onPressed: _saveToGallery,
-              icon: saveVideo
-                  ? const FaIcon(FontAwesomeIcons.check)
-                  : const FaIcon(FontAwesomeIcons.download))
+          //직접 찍었을때만 저장기능을 나타낸다
+          if (!widget.isPicked)
+            IconButton(
+                onPressed: _saveToGallery,
+                icon: saveVideo
+                    ? const FaIcon(FontAwesomeIcons.check)
+                    : const FaIcon(FontAwesomeIcons.download))
         ],
       ),
       body: _videoPlayerController.value.isInitialized

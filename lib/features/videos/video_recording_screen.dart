@@ -1,5 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:kill_tiktok/constants/gaps.dart';
 import 'package:kill_tiktok/constants/sizes.dart';
 import 'package:kill_tiktok/features/videos/video_preview_screen.dart';
@@ -117,10 +119,26 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     final file = await _cameraController.stopVideoRecording();
     print(file.name);
     print(file.path);
+    //에이싱크에서 컨텍스트 빌드 쓸때 필수
+    if (!mounted) return;
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => VideoPreviewScreen(video: file),
+          builder: (context) =>
+              VideoPreviewScreen(video: file, isPicked: false),
+        ));
+  }
+
+  Future<void> _onPickVideoPressed() async {
+    final video = await ImagePicker().pickVideo(source: ImageSource.gallery);
+    //만약 유저가 비디오를 선택하지 않았을 경우에는 아무일도 일어나지 않는다
+    if (video == null) return;
+    if (!mounted) return;
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              VideoPreviewScreen(video: video, isPicked: true),
         ));
   }
 
@@ -201,36 +219,54 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                     ),
                   ),
                   Positioned(
+                    width: MediaQuery.of(context).size.width,
                     bottom: 10,
-                    child: GestureDetector(
-                      onTapDown: _startRecording,
-                      //탭업에는 디테일이 필요한데 여기서 넣어줌으로서 다른곳에서 디테일없이 다 불러올수있다
-                      onTapUp: (details) => _stopRecording(),
-                      //애니메이션을 만들어준다
-                      child: ScaleTransition(
-                        scale: _buttonAnimation,
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            SizedBox(
-                              width: Sizes.size60 + Sizes.size10,
-                              height: Sizes.size60 + Sizes.size10,
-                              child: CircularProgressIndicator(
-                                color: Colors.red,
-                                strokeWidth: 6,
-                                value: _progressAnimationController.value,
-                              ),
+                    child: Row(
+                      children: [
+                        const Spacer(),
+                        GestureDetector(
+                          onTapDown: _startRecording,
+                          //탭업에는 디테일이 필요한데 여기서 넣어줌으로서 다른곳에서 디테일없이 다 불러올수있다
+                          onTapUp: (details) => _stopRecording(),
+                          //애니메이션을 만들어준다
+                          child: ScaleTransition(
+                            scale: _buttonAnimation,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                SizedBox(
+                                  width: Sizes.size60 + Sizes.size10,
+                                  height: Sizes.size60 + Sizes.size10,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.red,
+                                    strokeWidth: 6,
+                                    value: _progressAnimationController.value,
+                                  ),
+                                ),
+                                Container(
+                                  width: Sizes.size60,
+                                  height: Sizes.size60,
+                                  decoration: BoxDecoration(
+                                      color: Colors.red.shade400,
+                                      shape: BoxShape.circle),
+                                ),
+                              ],
                             ),
-                            Container(
-                              width: Sizes.size60,
-                              height: Sizes.size60,
-                              decoration: BoxDecoration(
-                                  color: Colors.red.shade400,
-                                  shape: BoxShape.circle),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
+                        Expanded(
+                          child: Container(
+                            //이걸 안하면 아이콘 주변을 눌러도 아이콘이 클릭됌
+                            alignment: Alignment.center,
+                            child: IconButton(
+                                onPressed: _onPickVideoPressed,
+                                icon: const FaIcon(
+                                  FontAwesomeIcons.image,
+                                  color: Colors.white,
+                                )),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ],
