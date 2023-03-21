@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:kill_tiktok/constants/gaps.dart';
 import 'package:kill_tiktok/constants/sizes.dart';
+import 'package:kill_tiktok/features/videos/video_preview_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class VideoRecordingScreen extends StatefulWidget {
@@ -45,9 +46,14 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
       return;
     }
     _cameraController = CameraController(
-        cameras[_isSelfieMode ? 1 : 0], ResolutionPreset.ultraHigh);
+      cameras[_isSelfieMode ? 1 : 0],
+      ResolutionPreset.ultraHigh,
+      // enableAudio: false,
+    );
 
     await _cameraController.initialize();
+    //ios르ㄹ 위한 메서드 가끔 영상 싱크가 안맞는다
+    await _cameraController.prepareForVideoRecording();
     //카메라가 가진 플래쉬모드의 값을 가져온다
     _flashMode = _cameraController.value.flashMode;
   }
@@ -95,16 +101,35 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     setState(() {});
   }
 
-  void _startRecording(TapDownDetails _) {
+  Future<void> _startRecording(TapDownDetails _) async {
+    if (_cameraController.value.isRecordingVideo) return;
+    await _cameraController.startVideoRecording();
     _buttonAnimationController.forward();
     _progressAnimationController.forward();
     print('start');
   }
 
-  void _stopRecording() {
+  Future<void> _stopRecording() async {
+    if (!_cameraController.value.isRecordingVideo) return;
     _buttonAnimationController.reverse();
     _progressAnimationController.reset();
     print('stop');
+    final file = await _cameraController.stopVideoRecording();
+    print(file.name);
+    print(file.path);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => VideoPreviewScreen(video: file),
+        ));
+  }
+
+  @override
+  void dispose() {
+    _buttonAnimationController.dispose();
+    _cameraController.dispose();
+    _progressAnimationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -187,7 +212,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
-                            Container(
+                            SizedBox(
                               width: Sizes.size60 + Sizes.size10,
                               height: Sizes.size60 + Sizes.size10,
                               child: CircularProgressIndicator(
