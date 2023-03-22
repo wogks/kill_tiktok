@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kill_tiktok/constants/gaps.dart';
 import 'package:kill_tiktok/constants/sizes.dart';
 import 'package:kill_tiktok/features/discover/discover_screen.dart';
@@ -10,15 +11,27 @@ import 'package:kill_tiktok/features/users/user_profile_screen.dart';
 import 'package:kill_tiktok/features/videos/video_timeline_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
-  const MainNavigationScreen({super.key});
+  static const String routeName = 'mainNavigation';
+  final String tab;
+  const MainNavigationScreen({super.key, required this.tab});
   @override
   State<MainNavigationScreen> createState() => _MainNavigationScreenState();
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int _currentIndex = 1;
+  final List<String> _tabs = [
+    'home',
+    'discover',
+    //비디오찍는용의 가짜탭
+    'xxxx',
+    'inbox',
+    'profile',
+  ];
+
+  late int _currentIndex = _tabs.indexOf(widget.tab);
 
   void _onTap(int index) {
+    context.go('/${_tabs[index]}');
     setState(() {
       _currentIndex = index;
     });

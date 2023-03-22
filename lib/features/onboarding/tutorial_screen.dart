@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kill_tiktok/common/widgets/main_navigation/main_navigation_screen.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
@@ -49,16 +49,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
   }
 
   void _onEnterAppTab() {
-    Navigator.of(context).pushAndRemoveUntil(
-      //predicate가 false를 리턴하면 해당라우트는 삭제된다, 트루면 해당 라우트는 유지된다.
-
-      MaterialPageRoute(
-        builder: (context) => const MainNavigationScreen(),
-      ),
-      (route) {
-        return false;
-      },
-    );
+    context.go('/home');
   }
 
   @override
