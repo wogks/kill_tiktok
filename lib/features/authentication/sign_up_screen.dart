@@ -17,7 +17,7 @@ class SignUpScreen extends StatelessWidget {
 
   void _onLoginTap(BuildContext context) {
     //push는 화면위에 화면을 쌓는거라 계속 누르면 무한 뒤로가기가 된다.
-   context.push(LoginScreen.routeName);
+    context.pushNamed(LoginScreen.routeName);
   }
 
   void _onEmailTap(BuildContext context) {
@@ -41,7 +41,12 @@ class SignUpScreen extends StatelessWidget {
     //         );
     //       }),
     // );
-context.pushNamed(UsernameScreen.routeName);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const UsernameScreen(),
+      ),
+    );
   }
 
   @override

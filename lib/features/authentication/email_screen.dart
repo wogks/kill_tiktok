@@ -5,19 +5,13 @@ import 'package:kill_tiktok/features/authentication/widgets/form_button.dart';
 
 import '../../constants/sizes.dart';
 
-class EmailScreenArgs{
+class EmailScreenArgs {
   final String username;
 
   EmailScreenArgs({required this.username});
-
-
 }
 
 class EmailScreen extends StatefulWidget {
-  static String routeURL = 'emailscreen';
-  static String routeName = 'emailscreen';
-
-
   final String username;
 
   const EmailScreen({super.key, required this.username});
@@ -113,9 +107,10 @@ class _EmailScreenState extends State<EmailScreen> {
                 ),
               ),
               Gaps.v16,
-              GestureDetector
-              (onTap: _onSubmit,
-                child: FormButton(disabled: _email.isEmpty || _isEmailValid() != null)),
+              GestureDetector(
+                  onTap: _onSubmit,
+                  child: FormButton(
+                      disabled: _email.isEmpty || _isEmailValid() != null)),
             ],
           ),
         ),

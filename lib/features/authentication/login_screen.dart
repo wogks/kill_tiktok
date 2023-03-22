@@ -7,12 +7,13 @@ import 'package:kill_tiktok/features/authentication/login_form_screen.dart';
 import 'package:kill_tiktok/features/authentication/widgets/auth_button.dart';
 
 class LoginScreen extends StatelessWidget {
-  static String routeName = '/login';
+  static String routeName = 'login';
+  static String routeURL = '/login';
   const LoginScreen({super.key});
 
   void _onSignUpTap(BuildContext context) {
     //pop은 가장 상단에 있는 화면을 현재 화면에서 제거할수 있다.
-context.pop();
+    context.pop();
   }
 
   _onEmailLoginTap(BuildContext context) {

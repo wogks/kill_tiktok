@@ -4,8 +4,8 @@ import 'package:kill_tiktok/constants/gaps.dart';
 import 'package:kill_tiktok/constants/sizes.dart';
 import 'package:kill_tiktok/features/discover/discover_screen.dart';
 import 'package:kill_tiktok/features/inbox/inbox_screen.dart';
-import 'package:kill_tiktok/features/main_navigation/widgets/nav_tab.dart';
-import 'package:kill_tiktok/features/main_navigation/widgets/post_video_button.dart';
+import 'package:kill_tiktok/common/widgets/main_navigation/widgets/nav_tab.dart';
+import 'package:kill_tiktok/common/widgets/main_navigation/widgets/post_video_button.dart';
 import 'package:kill_tiktok/features/users/user_profile_screen.dart';
 import 'package:kill_tiktok/features/videos/video_timeline_screen.dart';
 
@@ -59,7 +59,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           ),
           Offstage(
             offstage: _currentIndex != 4,
-            child:  UserProfileScreen(username: 'Wogks',tab: '',),
+            child: const UserProfileScreen(
+              username: 'Wogks',
+              tab: '',
+            ),
           ),
         ],
       ),

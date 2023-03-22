@@ -6,6 +6,9 @@ import 'package:kill_tiktok/features/onboarding/tutorial_screen.dart';
 import 'package:kill_tiktok/features/onboarding/widgets/interst_button.dart';
 
 class InterestScreen extends StatefulWidget {
+  static const String routeName = 'interests';
+  static const String routeURL = '/tutorial';
+
   const InterestScreen({super.key});
 
   @override

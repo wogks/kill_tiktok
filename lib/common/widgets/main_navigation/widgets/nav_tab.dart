@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../../constants/gaps.dart';
+import '../../../../constants/gaps.dart';
 
 class NavTab extends StatelessWidget {
   const NavTab(
@@ -10,7 +10,7 @@ class NavTab extends StatelessWidget {
       required this.isSelected,
       required this.icon,
       required this.selectedIcon,
-      required this.onTap, 
+      required this.onTap,
       required this.selectedIndex});
 
   final String text;
@@ -40,7 +40,8 @@ class NavTab extends StatelessWidget {
                 Gaps.v5,
                 Text(
                   text,
-                  style:  TextStyle(color: selectedIndex == 0 ? Colors.white : Colors.black),
+                  style: TextStyle(
+                      color: selectedIndex == 0 ? Colors.white : Colors.black),
                 )
               ],
             ),
