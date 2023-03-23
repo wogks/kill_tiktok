@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kill_tiktok/constants/sizes.dart';
 import 'package:kill_tiktok/features/inbox/chat_detail_screen.dart';
 
 class ChatScreen extends StatefulWidget {
+  static const String routeName = 'chats';
+  static const String routeURL = '/chats';
   const ChatScreen({super.key});
 
   @override
@@ -41,14 +44,16 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  void _onChattab() {
-    Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => const ChatDetailScreen()));
+  void _onChattab(index) {
+    context.pushNamed(
+      ChatDetailScreen.routeName,
+      params: {'chatId': '$index'},
+    );
   }
 
   Widget _makeTile(index) {
     return ListTile(
-      onTap: _onChattab,
+      onTap: () => _onChattab(index),
       onLongPress: () => _deleteItem(index),
       //플로터나 애미메이셔닝 유니크키 때문에 헷갈리지 않는다
       key: UniqueKey(),

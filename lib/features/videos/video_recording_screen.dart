@@ -11,6 +11,8 @@ import 'package:kill_tiktok/features/videos/video_preview_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class VideoRecordingScreen extends StatefulWidget {
+  static const String routeName = 'postVideo';
+  static const String routeURL = '/upload';
   const VideoRecordingScreen({super.key});
 
   @override

@@ -2,9 +2,13 @@ import 'package:go_router/go_router.dart';
 import 'package:kill_tiktok/common/widgets/main_navigation/main_navigation_screen.dart';
 import 'package:kill_tiktok/features/authentication/login_screen.dart';
 import 'package:kill_tiktok/features/authentication/sign_up_screen.dart';
+import 'package:kill_tiktok/features/inbox/activity_screen.dart';
+import 'package:kill_tiktok/features/inbox/chat_detail_screen.dart';
+import 'package:kill_tiktok/features/inbox/chats_screen.dart';
 import 'package:kill_tiktok/features/onboarding/interests_screen.dart';
 
 final router = GoRouter(
+  initialLocation: '/inbox',
   routes: [
     GoRoute(
       name: SignUpScreen.routeName,
@@ -28,6 +32,25 @@ final router = GoRouter(
         final tab = state.params['tab']!;
         return MainNavigationScreen(tab: tab);
       },
-    )
+    ),
+    GoRoute(
+      path: ActivityScreen.routeURL,
+      name: ActivityScreen.routeName,
+      builder: (context, state) => const ActivityScreen(),
+    ),
+    GoRoute(
+        path: ChatScreen.routeURL,
+        name: ChatScreen.routeName,
+        builder: (context, state) => const ChatScreen(),
+        //채팅방에 들어가면 상대방의 아이디로 자식 라우터를 만든다
+        routes: [
+          GoRoute(
+              path: ChatDetailScreen.routeURL,
+              name: ChatDetailScreen.routeName,
+              builder: (context, state) {
+                final chatId = state.params['chatId']!;
+                return ChatDetailScreen(chatId: chatId);
+              })
+        ]),
   ],
 );
