@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kill_tiktok/common/widgets/main_navigation/main_navigation_screen.dart';
 import 'package:kill_tiktok/features/authentication/login_screen.dart';
@@ -6,6 +7,7 @@ import 'package:kill_tiktok/features/inbox/activity_screen.dart';
 import 'package:kill_tiktok/features/inbox/chat_detail_screen.dart';
 import 'package:kill_tiktok/features/inbox/chats_screen.dart';
 import 'package:kill_tiktok/features/onboarding/interests_screen.dart';
+import 'package:kill_tiktok/features/videos/video_recording_screen.dart';
 
 final router = GoRouter(
   initialLocation: '/inbox',
@@ -52,5 +54,20 @@ final router = GoRouter(
                 return ChatDetailScreen(chatId: chatId);
               })
         ]),
+    GoRoute(
+      path: VideoRecordingScreen.routeURL,
+      name: VideoRecordingScreen.routeName,
+      pageBuilder: (context, state) => CustomTransitionPage(
+        transitionDuration: const Duration(milliseconds: 150),
+        child: const VideoRecordingScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          final position = Tween(
+            begin: const Offset(0, 1),
+            end: Offset.zero,
+          ).animate(animation);
+          return SlideTransition(position: position, child: child);
+        },
+      ),
+    ),
   ],
 );

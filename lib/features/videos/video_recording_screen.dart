@@ -163,8 +163,10 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   @override
   void dispose() {
     _buttonAnimationController.dispose();
-    _cameraController.dispose();
     _progressAnimationController.dispose();
+    if (!_noCamera) {
+      _cameraController.dispose();
+    }
     super.dispose();
   }
 
@@ -172,6 +174,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   //앱보다 권한창이 먼저 실행이 되면 에러가 생긴다(카메라컨트롤러가 초기화가 안되어 있는데 불러버림)
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (_noCamera) return;
     if (!_hasperMission) return;
     if (!_cameraController.value.isInitialized) return;
     print(state);
@@ -210,6 +213,12 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                     CameraPreview(
                       _cameraController,
                     ),
+                  const Positioned(
+                      top: Sizes.size40,
+                      left: Sizes.size20,
+                      child: CloseButton(
+                        color: Colors.white,
+                      )),
                   //플래쉬모드는 레이트라서 초기화되지 않으면 에러가 뜬다
                   if (!_noCamera && _cameraController.value.isInitialized)
                     Positioned(
