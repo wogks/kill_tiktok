@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:kill_tiktok/common/widgets/video_configureation/video_config.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -29,6 +30,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: ListView(
         children: [
+          SwitchListTile.adaptive(
+            value: VideoConfigData.of(context).autoMute,
+            onChanged: (value) {
+              VideoConfigData.of(context).toggleMuted();
+            },
+            title: const Text('automute videos'),
+            subtitle: const Text('video will be muted by default'),
+          ),
           SwitchListTile(
             value: _notifications,
             onChanged: _onNoificationsChanged,
@@ -97,8 +106,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         child: const Text('no'),
                         //새로운 창을 푸시한 상태라서 팝을 해준다
                         onPressed: () => Navigator.of(context).pop()),
-                     CupertinoDialogAction(
-                      onPressed: () => Navigator.of(context).pop(),
+                    CupertinoDialogAction(
+                        onPressed: () => Navigator.of(context).pop(),
                         //빠ㄹ간색
                         isDestructiveAction: true,
                         child: const Text('yes')),
@@ -122,8 +131,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         icon: const FaIcon(FontAwesomeIcons.car),
                         //새로운 창을 푸시한 상태라서 팝을 해준다
                         onPressed: () => Navigator.of(context).pop()),
-                     TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
+                    TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
                         child: const Text('yes')),
                   ],
                 ),
@@ -143,13 +152,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   message: const Text('plz dont ggoogogogo'),
                   actions: [
                     CupertinoActionSheetAction(
-                      //더 굵게 나온다
-                      isDefaultAction: true,
+                        //더 굵게 나온다
+                        isDefaultAction: true,
                         child: const Text('no'),
                         //새로운 창을 푸시한 상태라서 팝을 해준다
                         onPressed: () => Navigator.of(context).pop()),
-                     CupertinoActionSheetAction(
-                      onPressed: () => Navigator.of(context).pop(),
+                    CupertinoActionSheetAction(
+                        onPressed: () => Navigator.of(context).pop(),
                         //빠ㄹ간색
                         isDestructiveAction: true,
                         child: const Text('yes')),
