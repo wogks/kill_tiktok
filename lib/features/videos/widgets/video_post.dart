@@ -7,6 +7,7 @@ import 'package:kill_tiktok/constants/sizes.dart';
 import 'package:kill_tiktok/features/videos/widgets/video_button.dart';
 import 'package:kill_tiktok/features/videos/widgets/video_comments.dart';
 import 'package:marquee/marquee.dart';
+import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -36,8 +37,6 @@ class _VideoPostState extends State<VideoPost>
   late final AnimationController _animationController;
 
   bool _seeMore = false;
-
-  bool _autoMute = videoConfig.value;
 
   void _onSeeMoreClick() {
     setState(() {
@@ -82,12 +81,6 @@ class _VideoPostState extends State<VideoPost>
       value: 1.5,
       duration: _animationDuration,
     );
-
-    videoConfig.addListener(() {
-      setState(() {
-        _autoMute = videoConfig.value;
-      });
-    });
   }
 
   @override
@@ -196,13 +189,14 @@ class _VideoPostState extends State<VideoPost>
               top: 40,
               child: IconButton(
                 icon: FaIcon(
-                  _autoMute
+                  context.watch<VideoConfig>().isMuted
                       ? FontAwesomeIcons.volumeOff
                       : FontAwesomeIcons.volumeHigh,
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  videoConfig.value = !videoConfig.value;
+                  //한번만
+                  context.read<VideoConfig>().toggleIsMuted();
                 },
               )),
           Positioned(
