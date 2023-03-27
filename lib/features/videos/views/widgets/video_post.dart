@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:kill_tiktok/common/widgets/video_configureation/video_config.dart';
 import 'package:kill_tiktok/constants/gaps.dart';
 import 'package:kill_tiktok/constants/sizes.dart';
+import 'package:kill_tiktok/features/videos/view_models/playback_config_vm.dart';
 import 'package:kill_tiktok/features/videos/views/widgets/video_button.dart';
 import 'package:kill_tiktok/features/videos/views/widgets/video_comments.dart';
 import 'package:marquee/marquee.dart';
@@ -81,6 +81,20 @@ class _VideoPostState extends State<VideoPost>
       value: 1.5,
       duration: _animationDuration,
     );
+    //listen muted or not
+    context
+        .read<PlaybackConfigViewModel>()
+        .addListener(_onplaybackConfigChanged);
+  }
+
+  void _onplaybackConfigChanged() {
+    if (!mounted) return;
+    final muted = context.read<PlaybackConfigViewModel>().muted;
+    if (muted) {
+      _videoPlayerController.setVolume(0);
+    } else {
+      _videoPlayerController.setVolume(1);
+    }
   }
 
   @override
@@ -97,7 +111,10 @@ class _VideoPostState extends State<VideoPost>
         //paused 일때 새로고침하면 재생아이콘뜨면서 재생되는 버그를 해결
         !_isPaused &&
         !_videoPlayerController.value.isPlaying) {
-      _videoPlayerController.play();
+      final autoPlay = context.read<PlaybackConfigViewModel>().autoplay;
+      if (autoPlay) {
+        _videoPlayerController.play();
+      }
     }
     if (_videoPlayerController.value.isPlaying && info.visibleFraction == 0) {
       //동영상이 재생되고 있는 상황에서 화면이 보이지않으면(화면 넘어가면 동영상 정지)
@@ -188,13 +205,16 @@ class _VideoPostState extends State<VideoPost>
               left: 20,
               top: 40,
               child: IconButton(
-                icon: const FaIcon(
-                  false
+                icon: FaIcon(
+                  context.watch<PlaybackConfigViewModel>().muted
                       ? FontAwesomeIcons.volumeOff
                       : FontAwesomeIcons.volumeHigh,
                   color: Colors.white,
                 ),
                 onPressed: () {
+                  context
+                      .read<PlaybackConfigViewModel>()
+                      .setMuted(context.watch<PlaybackConfigViewModel>().muted);
                   // //한번만
                   // context.read<VideoConfig>().toggleIsMuted();
                 },
