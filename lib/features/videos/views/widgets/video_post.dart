@@ -37,6 +37,7 @@ class _VideoPostState extends State<VideoPost>
   late final AnimationController _animationController;
 
   bool _seeMore = false;
+  bool _isMuted = false;
 
   void _onSeeMoreClick() {
     setState(() {
@@ -58,6 +59,8 @@ class _VideoPostState extends State<VideoPost>
     await _videoPlayerController.initialize();
     await _videoPlayerController.setLooping(true);
     _videoPlayerController.addListener(_onVideoChange);
+    _onplaybackConfigChanged();
+    setState(() {});
     //k를 입력하면 모든 콘스탄트를 볼수있다
     //kisweb 만약에 퉵이라면
     if (kIsWeb) {
@@ -87,14 +90,13 @@ class _VideoPostState extends State<VideoPost>
         .addListener(_onplaybackConfigChanged);
   }
 
-  void _onplaybackConfigChanged() {
+  void _onplaybackConfigChanged({bool toggle = false}) {
+    //live or not mounted = alive
     if (!mounted) return;
-    final muted = context.read<PlaybackConfigViewModel>().muted;
-    if (muted) {
-      _videoPlayerController.setVolume(0);
-    } else {
-      _videoPlayerController.setVolume(1);
-    }
+    _isMuted =
+        toggle ? !_isMuted : context.read<PlaybackConfigViewModel>().muted;
+    _videoPlayerController.setVolume(_isMuted ? 0 : 1);
+    setState(() {});
   }
 
   @override
@@ -206,15 +208,13 @@ class _VideoPostState extends State<VideoPost>
               top: 40,
               child: IconButton(
                 icon: FaIcon(
-                  context.watch<PlaybackConfigViewModel>().muted
+                  _isMuted
                       ? FontAwesomeIcons.volumeOff
                       : FontAwesomeIcons.volumeHigh,
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  context
-                      .read<PlaybackConfigViewModel>()
-                      .setMuted(context.watch<PlaybackConfigViewModel>().muted);
+                  _onplaybackConfigChanged(toggle: true);
                   // //한번만
                   // context.read<VideoConfig>().toggleIsMuted();
                 },
