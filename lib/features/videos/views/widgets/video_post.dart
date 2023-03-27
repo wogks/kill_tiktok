@@ -188,15 +188,15 @@ class _VideoPostState extends State<VideoPost>
               left: 20,
               top: 40,
               child: IconButton(
-                icon: FaIcon(
-                  context.watch<VideoConfig>().isMuted
+                icon: const FaIcon(
+                  false
                       ? FontAwesomeIcons.volumeOff
                       : FontAwesomeIcons.volumeHigh,
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  //한번만
-                  context.read<VideoConfig>().toggleIsMuted();
+                  // //한번만
+                  // context.read<VideoConfig>().toggleIsMuted();
                 },
               )),
           Positioned(

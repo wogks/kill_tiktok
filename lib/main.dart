@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kill_tiktok/common/widgets/video_configureation/video_config.dart';
+import 'package:kill_tiktok/features/videos/repositories/video_playback_config_repo.dart';
+import 'package:kill_tiktok/features/videos/view_models/playback_config_vm.dart';
 import 'package:kill_tiktok/router.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants/sizes.dart';
 
@@ -15,7 +17,17 @@ void main() async {
   // SystemChrome.setSystemUIOverlayStyle(
   //   SystemUiOverlayStyle.light
   // );
-  runApp(const MyApp());
+
+  final preferences = await SharedPreferences.getInstance();
+  final repository = PlaybackConfigRepository(preferences);
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (context) => PlaybackConfigViewModel(repository),
+      )
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -23,50 +35,43 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (context) => VideoConfig(),
-        )
-      ],
-      child: MaterialApp.router(
-        routerConfig: router,
-        debugShowCheckedModeBanner: false,
-        title: 'tiktok killer',
-        //폰의 기기가 다크모드면 앱도 다크모드로 변한다
-        themeMode: ThemeMode.system,
-        darkTheme: ThemeData(
-            bottomAppBarTheme: BottomAppBarTheme(color: Colors.grey.shade800),
-            scaffoldBackgroundColor: Colors.black,
-            primaryColor: const Color(0xFFE9435A),
-            brightness: Brightness.dark),
-        theme: ThemeData(
-          textTheme: const TextTheme(
-              headlineLarge: TextStyle(
-            fontSize: Sizes.size24,
-            fontWeight: FontWeight.w700,
-            color: Colors.black,
-          )),
-          bottomAppBarTheme: BottomAppBarTheme(color: Colors.grey.shade50),
-          brightness: Brightness.light,
-          //클릭했을때 스플래시칼라가 없어진다
-          //splashColor: Colors.transparent,
-          //아예 없어진다 색깔이
-          //highlightColor: Colors.transparent,
-          scaffoldBackgroundColor: Colors.white,
+    return MaterialApp.router(
+      routerConfig: router,
+      debugShowCheckedModeBanner: false,
+      title: 'tiktok killer',
+      //폰의 기기가 다크모드면 앱도 다크모드로 변한다
+      themeMode: ThemeMode.system,
+      darkTheme: ThemeData(
+          bottomAppBarTheme: BottomAppBarTheme(color: Colors.grey.shade800),
+          scaffoldBackgroundColor: Colors.black,
           primaryColor: const Color(0xFFE9435A),
-          textSelectionTheme:
-              //쿠퍼티노 텍스트필드는 커서칼라 커스텀이 안되기 때문에 메인 테마설정하는곳에서 한다
-              const TextSelectionThemeData(cursorColor: Color(0xFFE9435A)),
-          appBarTheme: const AppBarTheme(
-            elevation: 0,
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.black,
-            titleTextStyle: TextStyle(
-              color: Colors.black,
-              fontSize: Sizes.size16 + Sizes.size2,
-              fontWeight: FontWeight.w600,
-            ),
+          brightness: Brightness.dark),
+      theme: ThemeData(
+        textTheme: const TextTheme(
+            headlineLarge: TextStyle(
+          fontSize: Sizes.size24,
+          fontWeight: FontWeight.w700,
+          color: Colors.black,
+        )),
+        bottomAppBarTheme: BottomAppBarTheme(color: Colors.grey.shade50),
+        brightness: Brightness.light,
+        //클릭했을때 스플래시칼라가 없어진다
+        //splashColor: Colors.transparent,
+        //아예 없어진다 색깔이
+        //highlightColor: Colors.transparent,
+        scaffoldBackgroundColor: Colors.white,
+        primaryColor: const Color(0xFFE9435A),
+        textSelectionTheme:
+            //쿠퍼티노 텍스트필드는 커서칼라 커스텀이 안되기 때문에 메인 테마설정하는곳에서 한다
+            const TextSelectionThemeData(cursorColor: Color(0xFFE9435A)),
+        appBarTheme: const AppBarTheme(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          titleTextStyle: TextStyle(
+            color: Colors.black,
+            fontSize: Sizes.size16 + Sizes.size2,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kill_tiktok/features/videos/widgets/video_post.dart';
+import 'package:kill_tiktok/features/videos/views/widgets/video_post.dart';
 
 class VideoTimelineScreen extends StatefulWidget {
   const VideoTimelineScreen({super.key});
@@ -43,11 +43,10 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
     super.dispose();
   }
 
-  Future<void> _onRefresh()async{
+  Future<void> _onRefresh() async {
     _onVideoFinished();
     //원래 api자리
     return Future.delayed(const Duration(seconds: 2));
-
   }
 
   @override
@@ -61,15 +60,15 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
       edgeOffset: 10,
       color: Theme.of(context).primaryColor,
       child: PageView.builder(
-          //자석효과 없어짐
-          //pageSnapping: false,
-          controller: _pageController,
-          onPageChanged: _onPageChanged,
-          itemCount: _itemCount,
-          scrollDirection: Axis.vertical,
-          itemBuilder: (context, index) =>
-              VideoPost(onVideoFinished: _onVideoFinished,
-              index: index),),
+        //자석효과 없어짐
+        //pageSnapping: false,
+        controller: _pageController,
+        onPageChanged: _onPageChanged,
+        itemCount: _itemCount,
+        scrollDirection: Axis.vertical,
+        itemBuilder: (context, index) =>
+            VideoPost(onVideoFinished: _onVideoFinished, index: index),
+      ),
     );
   }
 }
