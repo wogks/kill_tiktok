@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kill_tiktok/features/videos/view_models/timeline_vm.dart';
 import 'package:kill_tiktok/features/videos/views/widgets/video_post.dart';
 
-class VideoTimelineScreen extends StatefulWidget {
+class VideoTimelineScreen extends ConsumerStatefulWidget {
   const VideoTimelineScreen({super.key});
 
   @override
-  State<VideoTimelineScreen> createState() => _VideoTimelineScreenState();
+  VideoTimelineScreenState createState() => VideoTimelineScreenState();
 }
 
-class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
+class VideoTimelineScreenState extends ConsumerState<VideoTimelineScreen> {
   int _itemCount = 4;
   final PageController _pageController = PageController();
 
@@ -51,24 +53,31 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //이미 부의 scaffold 위젯 안에 있어서 또  할필요 없음
-    return RefreshIndicator(
-      //당겨서 새로고침 기능 반드시 퓨처를 반환해야한다
-      onRefresh: _onRefresh,
-      //위치조정
-      displacement: 40,
-      edgeOffset: 10,
-      color: Theme.of(context).primaryColor,
-      child: PageView.builder(
-        //자석효과 없어짐
-        //pageSnapping: false,
-        controller: _pageController,
-        onPageChanged: _onPageChanged,
-        itemCount: _itemCount,
-        scrollDirection: Axis.vertical,
-        itemBuilder: (context, index) =>
-            VideoPost(onVideoFinished: _onVideoFinished, index: index),
-      ),
-    );
+    return ref.watch(timelineProvider).when(
+          data: (videos) => RefreshIndicator(
+            //당겨서 새로고침 기능 반드시 퓨처를 반환해야한다
+            onRefresh: _onRefresh,
+            //위치조정
+            displacement: 40,
+            edgeOffset: 10,
+            color: Theme.of(context).primaryColor,
+            child: PageView.builder(
+              //자석효과 없어짐
+              //pageSnapping: false,
+              controller: _pageController,
+              onPageChanged: _onPageChanged,
+              itemCount: videos.length,
+              scrollDirection: Axis.vertical,
+              itemBuilder: (context, index) =>
+                  VideoPost(onVideoFinished: _onVideoFinished, index: index),
+            ),
+          ),
+          error: (error, stackTrace) => Center(
+            child: Text('로딩이 안돼! $error'),
+          ),
+          loading: () => const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
   }
 }
