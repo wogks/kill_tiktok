@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kill_tiktok/constants/gaps.dart';
 import 'package:kill_tiktok/constants/sizes.dart';
-import 'package:kill_tiktok/features/videos/view_models/playback_config_vm.dart';
 import 'package:kill_tiktok/features/videos/views/widgets/video_button.dart';
 import 'package:kill_tiktok/features/videos/views/widgets/video_comments.dart';
 import 'package:marquee/marquee.dart';
-import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -85,9 +83,9 @@ class _VideoPostState extends State<VideoPost>
       duration: _animationDuration,
     );
     //listen muted or not
-    context
-        .read<PlaybackConfigViewModel>()
-        .addListener(_onplaybackConfigChanged);
+    // context
+    //     .read<PlaybackConfigViewModel>()
+    //     .addListener(_onplaybackConfigChanged);
   }
 
   void _onplaybackConfigChanged({bool toggle = false}) {
