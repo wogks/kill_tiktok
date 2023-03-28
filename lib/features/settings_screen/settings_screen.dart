@@ -3,8 +3,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:kill_tiktok/features/videos/view_models/playback_config_vm.dart';
-import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -34,16 +32,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
           SwitchListTile.adaptive(
             title: const Text('AutoMute'),
             subtitle: const Text('they will be mute'),
-            value: context.watch<PlaybackConfigViewModel>().muted,
-            onChanged: (value) =>
-                context.read<PlaybackConfigViewModel>().setMuted(value),
+            value: false,
+            onChanged: (value) {},
           ),
           SwitchListTile.adaptive(
             title: const Text('AutoPLay'),
             subtitle: const Text('they will be autoplay'),
-            value: context.watch<PlaybackConfigViewModel>().autoplay,
-            onChanged: (value) =>
-                context.read<PlaybackConfigViewModel>().setAutoplay(value),
+            value: false,
+            onChanged: (value) {},
           ),
           SwitchListTile(
             value: _notifications,

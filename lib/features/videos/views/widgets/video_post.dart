@@ -93,8 +93,8 @@ class _VideoPostState extends State<VideoPost>
   void _onplaybackConfigChanged({bool toggle = false}) {
     //live or not mounted = alive
     if (!mounted) return;
-    _isMuted =
-        toggle ? !_isMuted : context.read<PlaybackConfigViewModel>().muted;
+    _isMuted = toggle ? !_isMuted : true;
+    // context.read<PlaybackConfigViewModel>().muted;
     _videoPlayerController.setVolume(_isMuted ? 0 : 1);
     setState(() {});
   }
@@ -113,8 +113,7 @@ class _VideoPostState extends State<VideoPost>
         //paused 일때 새로고침하면 재생아이콘뜨면서 재생되는 버그를 해결
         !_isPaused &&
         !_videoPlayerController.value.isPlaying) {
-      final autoPlay = context.read<PlaybackConfigViewModel>().autoplay;
-      if (autoPlay) {
+      if (false) {
         _videoPlayerController.play();
       }
     }
@@ -215,8 +214,6 @@ class _VideoPostState extends State<VideoPost>
                 ),
                 onPressed: () {
                   _onplaybackConfigChanged(toggle: true);
-                  // //한번만
-                  // context.read<VideoConfig>().toggleIsMuted();
                 },
               )),
           Positioned(

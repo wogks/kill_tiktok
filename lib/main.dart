@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kill_tiktok/features/videos/repositories/video_playback_config_repo.dart';
 import 'package:kill_tiktok/features/videos/view_models/playback_config_vm.dart';
 import 'package:kill_tiktok/router.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants/sizes.dart';
@@ -20,14 +20,15 @@ void main() async {
 
   final preferences = await SharedPreferences.getInstance();
   final repository = PlaybackConfigRepository(preferences);
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(
-        create: (context) => PlaybackConfigViewModel(repository),
-      )
-    ],
-    child: const MyApp(),
-  ));
+  runApp(
+    ProviderScope(
+      overrides: [
+        playbackConfigProvider
+            .overrideWith(() => PlaybackConfigViewModel(repository))
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
