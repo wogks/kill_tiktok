@@ -1,0 +1,162 @@
+{
+  "project_info": {
+    "project_number": "760703953577",
+    "project_id": "test-912ee",
+    "storage_bucket": "test-912ee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:760703953577:android:2b0a5a402a0c02d96717b8",
+        "android_client_info": {
+          "package_name": "com.example.firebase_why1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "760703953577-ekom4dhvkv8futu79lqa4pc4qq80cd5p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.firebase_why1",
+            "certificate_hash": "3fe02a7f31fbcc93854dd4e109f406f9b07f6aed"
+          }
+        },
+        {
+          "client_id": "760703953577-qv5ofso781121b1jrgbgcituqmvk2n0k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANqD-p_BCbPOXCUfys_u9Te0EPIr9ntuk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "760703953577-qv5ofso781121b1jrgbgcituqmvk2n0k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "760703953577-0va3d18ll917amtvl1vldb1t2bv1j7qe.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.killTiktok"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:760703953577:android:cbd0b7be01ca27a36717b8",
+        "android_client_info": {
+          "package_name": "com.example.kill_tiktok"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "760703953577-qv5ofso781121b1jrgbgcituqmvk2n0k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANqD-p_BCbPOXCUfys_u9Te0EPIr9ntuk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "760703953577-qv5ofso781121b1jrgbgcituqmvk2n0k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "760703953577-0va3d18ll917amtvl1vldb1t2bv1j7qe.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.killTiktok"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:760703953577:android:fa9cd491f7d748876717b8",
+        "android_client_info": {
+          "package_name": "com.example.movie_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "760703953577-qv5ofso781121b1jrgbgcituqmvk2n0k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANqD-p_BCbPOXCUfys_u9Te0EPIr9ntuk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "760703953577-qv5ofso781121b1jrgbgcituqmvk2n0k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "760703953577-0va3d18ll917amtvl1vldb1t2bv1j7qe.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.killTiktok"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:760703953577:android:52cb35c265b19f8b6717b8",
+        "android_client_info": {
+          "package_name": "com.example.new_insta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "760703953577-qv5ofso781121b1jrgbgcituqmvk2n0k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANqD-p_BCbPOXCUfys_u9Te0EPIr9ntuk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "760703953577-qv5ofso781121b1jrgbgcituqmvk2n0k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "760703953577-0va3d18ll917amtvl1vldb1t2bv1j7qe.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.killTiktok"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

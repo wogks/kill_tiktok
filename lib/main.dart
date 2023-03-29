@@ -1,8 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kill_tiktok/features/videos/repositories/video_playback_config_repo.dart';
 import 'package:kill_tiktok/features/videos/view_models/playback_config_vm.dart';
+import 'package:kill_tiktok/firebase_options.dart';
 import 'package:kill_tiktok/router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,6 +13,11 @@ import 'constants/sizes.dart';
 void main() async {
   //플러터 엔진과 프레임워크, 플랫폼을 묶는 접착제 안드와 애플은 다른 환경이다. 통신을 위해 안정성을 보장해야 하는데
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   //화면 눕히는거 금지시키는법
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   // 상태표시줄 색 바꿔주는법 원하는 페이지에만 사용할수있다
@@ -31,13 +38,13 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
-      routerConfig: router,
+      routerConfig: ref.watch(routerProvider),
       debugShowCheckedModeBanner: false,
       title: 'tiktok killer',
       //폰의 기기가 다크모드면 앱도 다크모드로 변한다
