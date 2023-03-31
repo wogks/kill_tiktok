@@ -14,6 +14,7 @@ import 'features/videos/views/video_recording_screen.dart';
 
 //we can access to ref which means that we can read providers all
 final routerProvider = Provider((ref) {
+  ref.watch(authStateStream);
   return GoRouter(
     initialLocation: '/home',
     redirect: (context, state) {

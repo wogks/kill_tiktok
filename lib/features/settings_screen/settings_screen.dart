@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:kill_tiktok/features/authentication/repos/authen_repository.dart';
 import 'package:kill_tiktok/features/videos/view_models/playback_config_vm.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -102,7 +104,10 @@ class SettingsScreen extends ConsumerWidget {
                         //새로운 창을 푸시한 상태라서 팝을 해준다
                         onPressed: () => Navigator.of(context).pop()),
                     CupertinoDialogAction(
-                        onPressed: () => Navigator.of(context).pop(),
+                        onPressed: () {
+                          ref.read(authRepo).signOut();
+                          context.go('/');
+                        },
                         //빠ㄹ간색
                         isDestructiveAction: true,
                         child: const Text('yes')),
