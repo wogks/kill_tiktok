@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kill_tiktok/constants/gaps.dart';
+import 'package:kill_tiktok/features/authentication/view_models/login_view_model.dart';
 import 'package:kill_tiktok/features/authentication/widgets/form_button.dart';
-import 'package:kill_tiktok/features/onboarding/interests_screen.dart';
 
 import '../../constants/sizes.dart';
 
-class LoginFormScreen extends StatefulWidget {
+class LoginFormScreen extends ConsumerStatefulWidget {
   const LoginFormScreen({super.key});
 
   @override
-  State<LoginFormScreen> createState() => _LoginFormScreenState();
+  ConsumerState<LoginFormScreen> createState() => _LoginFormScreenState();
 }
 
-class _LoginFormScreenState extends State<LoginFormScreen> {
+class _LoginFormScreenState extends ConsumerState<LoginFormScreen> {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
   void _onSubmitTap() {
@@ -31,8 +31,11 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
     if (_formkey.currentState != null) {
       if (_formkey.currentState!.validate()) {
         _formkey.currentState!.save();
+        ref
+            .read(loginProvider.notifier)
+            .login(formData['email']!, formData['password']!, context);
         //푸시는 화면위에 새 화면을 쌓는 위젯이다. 로그인 한후 다시 로그인화면으로 못돌아가게 리무브언틸을 써준다
-        context.goNamed(InterestScreen.routeName);
+        //context.goNamed(InterestScreen.routeName);
       }
       //print(formData.values);
     }
@@ -85,7 +88,8 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
               Gaps.v28,
               GestureDetector(
                   onTap: _onSubmitTap,
-                  child: const FormButton(disabled: false)),
+                  child:
+                      FormButton(disabled: ref.watch(loginProvider).isLoading)),
             ],
           ),
         ),

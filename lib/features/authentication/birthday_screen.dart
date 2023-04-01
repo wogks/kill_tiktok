@@ -32,7 +32,7 @@ class _BirthdayScreenState extends ConsumerState<BirthdayScreen> {
   }
 
   void _onNextTap() {
-    ref.read(signupProvider.notifier).signUp();
+    ref.read(signupProvider.notifier).signUp(context);
     //context.goNamed(InterestScreen.routeName);
   }
 
