@@ -10,8 +10,8 @@ class AuthenticationRepository {
 
   Stream<User?> authStateChanges() => _firebaseAuth.authStateChanges();
 
-  Future<void> signUp(String email, String password) async {
-    _firebaseAuth.createUserWithEmailAndPassword(
+  Future<UserCredential> signUp(String email, String password) async {
+    return _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
   }
 
