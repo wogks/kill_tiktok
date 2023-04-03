@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kill_tiktok/constants/gaps.dart';
 import 'package:kill_tiktok/features/authentication/view_models/signup_view_model.dart';
 import 'package:kill_tiktok/features/authentication/widgets/form_button.dart';
 
 import '../../constants/sizes.dart';
+import '../onboarding/interests_screen.dart';
 
 class BirthdayScreen extends ConsumerStatefulWidget {
   const BirthdayScreen({super.key});
@@ -33,7 +35,7 @@ class _BirthdayScreenState extends ConsumerState<BirthdayScreen> {
 
   void _onNextTap() {
     ref.read(signupProvider.notifier).signUp(context);
-    //context.goNamed(InterestScreen.routeName);
+    context.goNamed(InterestScreen.routeName);
   }
 
   void _setTextfieldDate(DateTime date) {
