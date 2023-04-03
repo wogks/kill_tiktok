@@ -4,8 +4,10 @@ class UserProfileModel {
   final String uid;
   final String bio;
   final String link;
+  final String birthday;
 
   UserProfileModel({
+    required this.birthday,
     required this.email,
     required this.name,
     required this.uid,
@@ -18,7 +20,8 @@ class UserProfileModel {
         email = '',
         bio = '',
         name = '',
-        link = '';
+        link = '',
+        birthday = '';
 
   Map<String, String> toJason() {
     return {
@@ -27,6 +30,7 @@ class UserProfileModel {
       'bio': bio,
       'name': name,
       'link': link,
+      'birthday': birthday,
     };
   }
 }

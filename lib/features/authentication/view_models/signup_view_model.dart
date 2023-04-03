@@ -21,13 +21,21 @@ class SignupViewModel extends AsyncNotifier<void> {
     final form = ref.read(signUpForm);
     final users = ref.read(usersProvider.notifier);
 
-    state = await AsyncValue.guard(() async {
-      final userCredential = await _authRepo.signUp(
-        form['email'],
-        form['password'],
-      );
-      await users.createProfile(userCredential);
-    });
+    state = await AsyncValue.guard(
+      () async {
+        final userCredential = await _authRepo.signUp(
+          form['email'],
+          form['password'],
+        );
+        final birthday = form['birthday'].toString();
+        final name = form['name'].toString();
+        users.createProfile(
+          user: userCredential.user!,
+          birthday: birthday,
+          name: name,
+        );
+      },
+    );
     if (state.hasError) {
       showFirebaseErrorSnack(context, state.error);
     } else {

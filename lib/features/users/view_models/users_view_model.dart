@@ -14,17 +14,16 @@ class UsersViewModel extends AsyncNotifier<UserProfileModel> {
     return UserProfileModel.empty();
   }
 
-  Future<void> createProfile(UserCredential credential) async {
-    if (credential.user == null) {
-      throw Exception('account not created');
-    }
+  Future<void> createProfile(
+      {required User user, String? birthday, String? name}) async {
     state = const AsyncValue.loading();
     final profile = UserProfileModel(
-      email: credential.user!.email ?? 'asdasd@com',
-      name: credential.user!.displayName ?? 'anony',
-      uid: credential.user!.uid,
+      email: user.email ?? 'asdasd@com',
+      name: name ?? 'anony',
+      uid: user.uid,
       bio: 'undifined',
       link: 'undifined',
+      birthday: birthday ?? 'aaa',
     );
     await _repository.createProfile(profile);
     state = AsyncValue.data(profile);
