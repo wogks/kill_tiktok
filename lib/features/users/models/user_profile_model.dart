@@ -5,6 +5,7 @@ class UserProfileModel {
   final String bio;
   final String link;
   final String birthday;
+  final bool hasAvatar;
 
   UserProfileModel({
     required this.birthday,
@@ -13,6 +14,7 @@ class UserProfileModel {
     required this.uid,
     required this.bio,
     required this.link,
+    required this.hasAvatar,
   });
 //모델이 비어있을때 빈값 리턴
   UserProfileModel.empty()
@@ -21,7 +23,8 @@ class UserProfileModel {
         bio = '',
         name = '',
         link = '',
-        birthday = '';
+        birthday = '',
+        hasAvatar = false;
 
   UserProfileModel.fromJson(Map<String, dynamic> json)
       : uid = json['uid'],
@@ -29,6 +32,7 @@ class UserProfileModel {
         email = json['email'],
         name = json['name'],
         link = json['link'],
+        hasAvatar = json['hasAvatar'],
         bio = json['bio'];
 
   Map<String, String> toJason() {
@@ -40,5 +44,26 @@ class UserProfileModel {
       'link': link,
       'birthday': birthday,
     };
+  }
+
+  UserProfileModel copyWith({
+    String? email,
+    String? name,
+    String? uid,
+    String? bio,
+    String? link,
+    String? birthday,
+    bool? hasAvatar,
+  }) {
+    return UserProfileModel(
+      //this는 유저프로파일모델이 원래 가지고 있던것을 가져온다
+      birthday: birthday ?? this.birthday,
+      email: email ?? this.email,
+      name: name ?? this.name,
+      uid: uid ?? this.uid,
+      bio: bio ?? this.bio,
+      link: link ?? this.link,
+      hasAvatar: hasAvatar ?? this.hasAvatar,
+    );
   }
 }
