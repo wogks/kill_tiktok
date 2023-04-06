@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kill_tiktok/features/videos/models/video_model.dart';
 
 class VideoRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -14,7 +15,10 @@ class VideoRepository {
         '/videos/$uid/${DateTime.now().millisecondsSinceEpoch.toString()}');
     return fileRef.putFile(video);
   }
-  //create a video document
+
+  Future<void> saveVideo(VideoModel data) async {
+    await _db.collection('videos').add(data.toJason());
+  }
 }
 
 final videosRepo = Provider((ref) => VideoRepository());
