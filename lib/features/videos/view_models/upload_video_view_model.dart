@@ -38,7 +38,7 @@ class UploadVideoViewModel extends AsyncNotifier<void> {
           ));
         }
       });
-      context.pushReplacement('/');
+      context.pushReplacement('/home');
     }
   }
 }
