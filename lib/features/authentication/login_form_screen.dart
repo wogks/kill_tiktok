@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kill_tiktok/constants/gaps.dart';
 import 'package:kill_tiktok/features/authentication/view_models/login_view_model.dart';
 import 'package:kill_tiktok/features/authentication/widgets/form_button.dart';
@@ -35,7 +36,7 @@ class _LoginFormScreenState extends ConsumerState<LoginFormScreen> {
             .read(loginProvider.notifier)
             .login(formData['email']!, formData['password']!, context);
         //푸시는 화면위에 새 화면을 쌓는 위젯이다. 로그인 한후 다시 로그인화면으로 못돌아가게 리무브언틸을 써준다
-        //context.goNamed(InterestScreen.routeName);
+        context.go("/home");
       }
       //print(formData.values);
     }

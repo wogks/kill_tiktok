@@ -39,8 +39,8 @@ class _BirthdayScreenState extends ConsumerState<BirthdayScreen> {
       ...state,
       'birthday': _birthdatController.value.text,
     };
-    ref.read(signupProvider.notifier).signUp(context);
-    context.goNamed(InterestScreen.routeName);
+    ref.read(signUpProvider.notifier).signUp(context);
+    context.goNamed(InterestsScreen.routeName);
   }
 
   void _setTextfieldDate(DateTime date) {
@@ -93,7 +93,7 @@ class _BirthdayScreenState extends ConsumerState<BirthdayScreen> {
             ),
             Gaps.v16,
             GestureDetector(
-              child: FormButton(disabled: ref.watch(signupProvider).isLoading),
+              child: FormButton(disabled: ref.watch(signUpProvider).isLoading),
               onTap: () {
                 _onNextTap();
               },

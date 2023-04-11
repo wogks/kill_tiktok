@@ -5,14 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gallery_saver/gallery_saver.dart';
-import 'package:kill_tiktok/features/videos/view_models/upload_video_view_model.dart';
 import 'package:video_player/video_player.dart';
+
+import '../view_models/upload_video_view_model.dart';
 
 class VideoPreviewScreen extends ConsumerStatefulWidget {
   final XFile video;
   final bool isPicked;
-  const VideoPreviewScreen(
-      {super.key, required this.video, required this.isPicked});
+
+  const VideoPreviewScreen({
+    super.key,
+    required this.video,
+    required this.isPicked,
+  });
 
   @override
   VideoPreviewScreenState createState() => VideoPreviewScreenState();
@@ -20,13 +25,19 @@ class VideoPreviewScreen extends ConsumerStatefulWidget {
 
 class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
   late final VideoPlayerController _videoPlayerController;
-  bool saveVideo = false;
+
+  bool _savedVideo = false;
+
   Future<void> _initVideo() async {
-    _videoPlayerController =
-        VideoPlayerController.file(File(widget.video.path));
+    _videoPlayerController = VideoPlayerController.file(
+      File(widget.video.path),
+    );
+
     await _videoPlayerController.initialize();
     await _videoPlayerController.setLooping(true);
-    // await _videoPlayerController.play();
+    await _videoPlayerController.setVolume(0);
+//     await _videoPlayerController.play();
+
     setState(() {});
   }
 
@@ -43,19 +54,23 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
   }
 
   Future<void> _saveToGallery() async {
-    if (saveVideo) return;
+    if (_savedVideo) return;
+
     await GallerySaver.saveVideo(
       widget.video.path,
-      albumName: 'tiktok clone',
+      albumName: "TikTok Clone!",
     );
-    saveVideo = true;
+
+    _savedVideo = true;
+
     setState(() {});
   }
 
-  void _onUploadPressed() {
-    ref
-        .read(uploadVideoProvider.notifier)
-        .uploadVideo(File(widget.video.path), context);
+  void _onUploadPressed() async {
+    ref.read(uploadVideoProvider.notifier).uploadVideo(
+          File(widget.video.path),
+          context,
+        );
   }
 
   @override
@@ -63,22 +78,25 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text('PreviewVideo'),
+        title: const Text('Preview video'),
         actions: [
-          //직접 찍었을때만 저장기능을 나타낸다
           if (!widget.isPicked)
             IconButton(
-                onPressed: _saveToGallery,
-                icon: saveVideo
-                    ? const FaIcon(FontAwesomeIcons.check)
-                    : const FaIcon(FontAwesomeIcons.download)),
+              onPressed: _saveToGallery,
+              icon: FaIcon(
+                _savedVideo
+                    ? FontAwesomeIcons.check
+                    : FontAwesomeIcons.download,
+              ),
+            ),
           IconButton(
-              onPressed: ref.watch(uploadVideoProvider).isLoading
-                  ? () {}
-                  : _onUploadPressed,
-              icon: ref.watch(uploadVideoProvider).isLoading
-                  ? const CircularProgressIndicator()
-                  : const FaIcon(FontAwesomeIcons.cloudArrowUp))
+            onPressed: ref.watch(uploadVideoProvider).isLoading
+                ? () {}
+                : _onUploadPressed,
+            icon: ref.watch(uploadVideoProvider).isLoading
+                ? const CircularProgressIndicator()
+                : const FaIcon(FontAwesomeIcons.cloudArrowUp),
+          )
         ],
       ),
       body: _videoPlayerController.value.isInitialized

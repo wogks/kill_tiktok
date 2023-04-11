@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-
 import '../../../constants/sizes.dart';
+import '../../../utils.dart';
 
 class InterestButton extends StatefulWidget {
   const InterestButton({
-    super.key,
-    required this.interests,
-  });
+    Key? key,
+    required this.interest,
+  }) : super(key: key);
 
-  final String interests;
+  final String interest;
 
   @override
   State<InterestButton> createState() => _InterestButtonState();
@@ -19,7 +19,6 @@ class _InterestButtonState extends State<InterestButton> {
 
   void _onTap() {
     setState(() {
-      //선택하면 왓다리갔다리
       _isSelected = !_isSelected;
     });
   }
@@ -27,16 +26,22 @@ class _InterestButtonState extends State<InterestButton> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: _onTap ,
+      onTap: _onTap,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
+        duration: const Duration(milliseconds: 300),
         padding: const EdgeInsets.symmetric(
-          vertical: Sizes.size12,
+          vertical: Sizes.size16,
           horizontal: Sizes.size24,
         ),
         decoration: BoxDecoration(
-          color: _isSelected ? Theme.of(context).primaryColor : Colors.white,
-          borderRadius: BorderRadius.circular(Sizes.size32),
+          color: _isSelected
+              ? Theme.of(context).primaryColor
+              : isDarkMode(context)
+                  ? Colors.grey.shade700
+                  : Colors.white,
+          borderRadius: BorderRadius.circular(
+            Sizes.size32,
+          ),
           border: Border.all(
             color: Colors.black.withOpacity(0.1),
           ),
@@ -49,10 +54,10 @@ class _InterestButtonState extends State<InterestButton> {
           ],
         ),
         child: Text(
-          widget.interests,
+          widget.interest,
           style: TextStyle(
-            color: _isSelected ? Colors.white : Colors.black87,
-            fontWeight: FontWeight.bold),
+              fontWeight: FontWeight.bold,
+              color: _isSelected ? Colors.white : Colors.black87),
         ),
       ),
     );
