@@ -50,6 +50,10 @@ class VideoPostState extends ConsumerState<VideoPost>
     }
   }
 
+  void _onLikeTap() {
+    ref.read(videoPostProvider(widget.videoData.id).notifier).likeVideo();
+  }
+
   void _initVideoPlayer() async {
     _videoPlayerController =
         VideoPlayerController.asset("assets/videos/video.mp4");
@@ -132,10 +136,6 @@ class VideoPostState extends ConsumerState<VideoPost>
       builder: (context) => const VideoComments(),
     );
     _onTogglePause();
-  }
-
-  void _onLikeTap() {
-    ref.read(videoPostProvider(widget.videoData.id).notifier).likeVideo();
   }
 
   @override
@@ -229,6 +229,9 @@ class VideoPostState extends ConsumerState<VideoPost>
                   radius: 25,
                   backgroundColor: Colors.black,
                   foregroundColor: Colors.white,
+                  foregroundImage: NetworkImage(
+                    "https://firebasestorage.googleapis.com/v0/b/tiktok-abc-xyz.appspot.com/o/avatars%2F${widget.videoData.creatorUid}?alt=media",
+                  ),
                   child: Text(widget.videoData.creator),
                 ),
                 Gaps.v24,
@@ -236,7 +239,7 @@ class VideoPostState extends ConsumerState<VideoPost>
                   onTap: _onLikeTap,
                   child: VideoButton(
                     icon: FontAwesomeIcons.solidHeart,
-                    text: ('${widget.videoData.likes}'),
+                    text: '${widget.videoData.likes}',
                   ),
                 ),
                 Gaps.v24,
@@ -244,7 +247,7 @@ class VideoPostState extends ConsumerState<VideoPost>
                   onTap: () => _onCommentsTap(context),
                   child: VideoButton(
                     icon: FontAwesomeIcons.solidComment,
-                    text: ('${widget.videoData.comments}'),
+                    text: '${widget.videoData.comments}',
                   ),
                 ),
                 Gaps.v24,

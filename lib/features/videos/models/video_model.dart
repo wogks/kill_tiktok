@@ -1,11 +1,11 @@
 class VideoModel {
-  final String id;
   final String title;
   final String description;
   final String fileUrl;
   final String thumbnailUrl;
   final String creatorUid;
   final String creator;
+  final String id;
   final int likes;
   final int comments;
   final int createdAt;
@@ -23,8 +23,10 @@ class VideoModel {
     required this.creator,
   });
 
-  VideoModel.fromJson(Map<String, dynamic> json, String videoId)
-      : title = json["title"],
+  VideoModel.fromJson({
+    required Map<String, dynamic> json,
+    required String videoId,
+  })  : title = json["title"],
         description = json["description"],
         fileUrl = json["fileUrl"],
         thumbnailUrl = json["thumbnailUrl"],
