@@ -11,6 +11,7 @@ import '../../../../constants/gaps.dart';
 import '../../../../constants/sizes.dart';
 import '../../models/video_model.dart';
 import '../../view_models/playback_config_vm.dart';
+import '../../view_models/video_post_view_model.dart';
 
 class VideoPost extends ConsumerStatefulWidget {
   final Function onVideoFinished;
@@ -133,6 +134,10 @@ class VideoPostState extends ConsumerState<VideoPost>
     _onTogglePause();
   }
 
+  void _onLikeTap() {
+    ref.read(videoPostProvider(widget.videoData.id).notifier).likeVideo();
+  }
+
   @override
   Widget build(BuildContext context) {
     return VisibilityDetector(
@@ -227,9 +232,12 @@ class VideoPostState extends ConsumerState<VideoPost>
                   child: Text(widget.videoData.creator),
                 ),
                 Gaps.v24,
-                VideoButton(
-                  icon: FontAwesomeIcons.solidHeart,
-                  text: ('${widget.videoData.likes}'),
+                GestureDetector(
+                  onTap: _onLikeTap,
+                  child: VideoButton(
+                    icon: FontAwesomeIcons.solidHeart,
+                    text: ('${widget.videoData.likes}'),
+                  ),
                 ),
                 Gaps.v24,
                 GestureDetector(

@@ -34,6 +34,10 @@ class VideosRepository {
       return query.startAfter([lastItemCreatedAt]).get();
     }
   }
+
+  Future<void> likeVideo(String videoId, String userId) async {
+    await _db.collection("likes").add({"userId": userId, "videoId": videoId});
+  }
 }
 
 final videosRepo = Provider((ref) => VideosRepository());
