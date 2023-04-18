@@ -1,82 +1,111 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kill_tiktok/constants/gaps.dart';
-import 'package:kill_tiktok/constants/sizes.dart';
-import 'package:kill_tiktok/features/authentication/login_form_screen.dart';
+import 'package:kill_tiktok/features/authentication/view_models/social_auth_view_model.dart';
 import 'package:kill_tiktok/features/authentication/widgets/auth_button.dart';
 
-class LoginScreen extends StatelessWidget {
-  static String routeName = 'login';
-  static String routeURL = '/login';
+import '../../constants/gaps.dart';
+import '../../constants/sizes.dart';
+import '../../utils.dart';
+import 'login_form_screen.dart';
+
+class LoginScreen extends ConsumerWidget {
+  static String routeName = "login";
+  static String routeURL = "/login";
   const LoginScreen({super.key});
 
   void _onSignUpTap(BuildContext context) {
-    //pop은 가장 상단에 있는 화면을 현재 화면에서 제거할수 있다.
     context.pop();
   }
 
-  _onEmailLoginTap(BuildContext context) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const LoginFormScreen()));
+  void _onEmailLoginTap(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const LoginFormScreen(),
+      ),
+    );
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Sizes.size40),
+          padding: const EdgeInsets.symmetric(
+            horizontal: Sizes.size40,
+          ),
           child: Column(
             children: [
               Gaps.v80,
-              Text(
+              const Text(
                 "Log in to TikTok",
-                style: Theme.of(context).textTheme.headlineLarge,
+                style: TextStyle(
+                  fontSize: Sizes.size24,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
               Gaps.v20,
-              const Text(
-                'Manage yout aacount, check notifications, comment on videos, and more',
-                style: TextStyle(
-                  fontSize: Sizes.size16,
-                  color: Colors.black45,
+              const Opacity(
+                opacity: 0.7,
+                child: Text(
+                  "Manage your account, check notifications, comment on videos, and more.",
+                  style: TextStyle(
+                    fontSize: Sizes.size16,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
               ),
-              Gaps.v40,
               Gaps.v40,
               GestureDetector(
                 onTap: () => _onEmailLoginTap(context),
                 child: const AuthButton(
-                    icon: FaIcon(FontAwesomeIcons.user),
-                    text: 'Use email & password'),
+                  icon: FaIcon(FontAwesomeIcons.user),
+                  text: "Use email & password",
+                ),
               ),
               Gaps.v16,
-              const AuthButton(
-                  icon: FaIcon(FontAwesomeIcons.apple),
-                  text: 'Continue with Apple'),
+              GestureDetector(
+                onTap: () =>
+                    ref.read(socialAuthProvider.notifier).githubSingIn(context),
+                child: const AuthButton(
+                  icon: FaIcon(FontAwesomeIcons.github),
+                  text: "Continue with Github",
+                ),
+              ),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        elevation: 1,
-        //아주 옅은 검정
-        color: Colors.grey.shade100,
+      bottomNavigationBar: Container(
+        color: isDarkMode(context)
+            ? Theme.of(context).appBarTheme.backgroundColor
+            : Colors.grey.shade50,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: Sizes.size32),
+          padding: const EdgeInsets.only(
+            top: Sizes.size32,
+            bottom: Sizes.size64,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text("Don't have an account?"),
+              const Text(
+                "Don't have an account?",
+                style: TextStyle(
+                  fontSize: Sizes.size16,
+                ),
+              ),
               Gaps.h5,
               GestureDetector(
                 onTap: () => _onSignUpTap(context),
                 child: Text(
-                  'Sign up',
+                  "Sign up",
                   style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.w600),
+                    fontSize: Sizes.size16,
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
               ),
             ],

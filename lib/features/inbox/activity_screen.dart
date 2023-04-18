@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:kill_tiktok/constants/gaps.dart';
-import 'package:kill_tiktok/constants/sizes.dart';
+
+import '../../constants/gaps.dart';
+import '../../constants/sizes.dart';
+import '../../utils.dart';
 
 class ActivityScreen extends StatefulWidget {
-  static const String routeName = 'activity';
-  static const String routeURL = '/activity';
+  static const String routeName = "activity";
+  static const String routeURL = "/activity";
   const ActivityScreen({super.key});
 
   @override
@@ -13,38 +15,8 @@ class ActivityScreen extends StatefulWidget {
 }
 
 class _ActivityScreenState extends State<ActivityScreen>
-//tick은 애니메이션의 매 프레인마다 콜백 함수를 호출
-//애니메이션 사용하려면 이걸 믹스인
-    with
-        SingleTickerProviderStateMixin {
-  final List<String> _notifications = List.generate(20, (index) => '${index}h');
-
-  bool _showBarrier = false;
-
-//late여야한다 이닛스테이트같은 초기화문에서도 this를 참조할수 있다 this나 다른 인스턴스를 참조하려면 late를 써야한다
-  late final AnimationController _animationController = AnimationController(
-      vsync: this, duration: const Duration(milliseconds: 200));
-  late final Animation<double> _arrowAnimation = Tween(
-    begin: 0.0,
-    end: 0.5,
-  ).animate(_animationController);
-
-  void _onDismissed(String notification) {
-    //옆으로 슬라이드할때 진짜로 지우는 메서드
-    _notifications.remove(notification);
-    setState(() {});
-  }
-
-  void _onToggleAnimations() async {
-    if (_animationController.isCompleted) {
-      await _animationController.reverse();
-    } else {
-      _animationController.forward();
-    }
-    setState(() {
-      _showBarrier = !_showBarrier;
-    });
-  }
+    with SingleTickerProviderStateMixin {
+  final List<String> _notifications = List.generate(20, (index) => "${index}h");
 
   final List<Map<String, dynamic>> _tabs = [
     {
@@ -73,29 +45,62 @@ class _ActivityScreenState extends State<ActivityScreen>
     }
   ];
 
-//하나의 애니메이션 컨트롤러를 사용하고 있다
-  late final Animation<Offset> _pannelAnimation =
-      Tween(begin: const Offset(0, -1), end: const Offset(0, 0))
-          .animate(_animationController);
+  bool _showBarrier = false;
+
+  late final AnimationController _animationController = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 200),
+  );
+
+  late final Animation<double> _arrowAnimation =
+      Tween(begin: 0.0, end: 0.5).animate(_animationController);
+
+  late final Animation<Offset> _panelAnimation = Tween(
+    begin: const Offset(0, -1),
+    end: Offset.zero,
+  ).animate(_animationController);
+
   late final Animation<Color?> _barrierAnimation = ColorTween(
     begin: Colors.transparent,
     end: Colors.black38,
   ).animate(_animationController);
 
+  void _onDismissed(String notification) {
+    _notifications.remove(notification);
+    setState(() {});
+  }
+
+  void _toggleAnimations() async {
+    if (_animationController.isCompleted) {
+      await _animationController.reverse();
+    } else {
+      _animationController.forward();
+    }
+
+    setState(() {
+      _showBarrier = !_showBarrier;
+    });
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isDark = isDarkMode(context);
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
-          onTap: _onToggleAnimations,
+          onTap: _toggleAnimations,
           child: Row(
-            //뒤로가기 버튼때문에 가운데 오지 않았던 타이틀이 가운데로 오게 만드는 법
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('All Activity'),
-              Gaps.h5,
-              //
+              const Text("All activity"),
+              Gaps.h2,
               RotationTransition(
                 turns: _arrowAnimation,
                 child: const FaIcon(
@@ -113,102 +118,122 @@ class _ActivityScreenState extends State<ActivityScreen>
             children: [
               Gaps.v14,
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Sizes.size12,
+                ),
                 child: Text(
                   'New',
                   style: TextStyle(
-                      fontSize: Sizes.size14, color: Colors.grey.shade500),
+                    fontSize: Sizes.size14,
+                    color: Colors.grey.shade500,
+                  ),
                 ),
               ),
               Gaps.v14,
               for (var notification in _notifications)
-                //밀어서 삭제
                 Dismissible(
-                  onDismissed: (direction) => _onDismissed(notification),
                   key: Key(notification),
+                  onDismissed: (direction) => _onDismissed(notification),
                   background: Container(
-                    //아이콘 위치
                     alignment: Alignment.centerLeft,
-                    color: Colors.amber,
+                    color: Colors.green,
                     child: const Padding(
-                      padding: EdgeInsets.only(left: Sizes.size10),
-                      child: FaIcon(FontAwesomeIcons.check,
-                          color: Colors.white, size: Sizes.size32),
+                      padding: EdgeInsets.only(
+                        left: Sizes.size10,
+                      ),
+                      child: FaIcon(
+                        FontAwesomeIcons.checkDouble,
+                        color: Colors.white,
+                        size: Sizes.size24,
+                      ),
                     ),
                   ),
                   secondaryBackground: Container(
-                    //아이콘 위치
                     alignment: Alignment.centerRight,
                     color: Colors.red,
                     child: const Padding(
-                      padding: EdgeInsets.only(right: Sizes.size10),
-                      child: FaIcon(FontAwesomeIcons.trashCan,
-                          color: Colors.white, size: Sizes.size32),
+                      padding: EdgeInsets.only(
+                        right: Sizes.size10,
+                      ),
+                      child: FaIcon(
+                        FontAwesomeIcons.trashCan,
+                        color: Colors.white,
+                        size: Sizes.size24,
+                      ),
                     ),
                   ),
                   child: ListTile(
                     minVerticalPadding: Sizes.size16,
-                    //padding of listile
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: Sizes.size10),
                     leading: Container(
                       width: Sizes.size52,
                       decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Colors.grey.shade400, width: Sizes.size1),
-                          shape: BoxShape.circle,
-                          color: Colors.white),
+                        shape: BoxShape.circle,
+                        color: isDark ? Colors.grey.shade800 : Colors.white,
+                        border: Border.all(
+                          color: isDark
+                              ? Colors.grey.shade800
+                              : Colors.grey.shade400,
+                          width: Sizes.size1,
+                        ),
+                      ),
                       child: const Center(
-                          child: FaIcon(
-                        FontAwesomeIcons.bell,
-                        color: Colors.black,
-                      )),
+                        child: FaIcon(
+                          FontAwesomeIcons.bell,
+                        ),
+                      ),
                     ),
                     title: RichText(
                       text: TextSpan(
-                        text: 'Account updates:',
-                        style: const TextStyle(
+                        text: "Account updates:",
+                        style: TextStyle(
                             fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                            fontSize: Sizes.size16),
+                            fontSize: Sizes.size16,
+                            color: isDark ? null : Colors.black),
                         children: [
                           const TextSpan(
-                            text: " upload longer viddeos ",
-                            style: TextStyle(fontWeight: FontWeight.normal),
+                            text: " Upload longer videos",
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                            ),
                           ),
                           TextSpan(
-                            text: notification,
+                            text: " $notification",
                             style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                color: Colors.grey.shade500),
+                              fontWeight: FontWeight.normal,
+                              color: Colors.grey.shade500,
+                            ),
                           ),
                         ],
                       ),
                     ),
                     trailing: const FaIcon(
                       FontAwesomeIcons.chevronRight,
-                      size: Sizes.size20,
+                      size: Sizes.size16,
                     ),
                   ),
-                ),
+                )
             ],
           ),
           if (_showBarrier)
             AnimatedModalBarrier(
-                //다른곳 누르몀ㄴ 올라감
-                dismissible: true,
-                onDismiss: _onToggleAnimations,
-                color: _barrierAnimation),
-          //아래로 슬라이드
+              color: _barrierAnimation,
+              dismissible: true,
+              onDismiss: _toggleAnimations,
+            ),
           SlideTransition(
-            position: _pannelAnimation,
+            position: _panelAnimation,
             child: Container(
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(Sizes.size5),
-                    bottomLeft: Radius.circular(Sizes.size5),
-                  )),
+              decoration: BoxDecoration(
+                color: Theme.of(context).appBarTheme.backgroundColor,
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(
+                    Sizes.size5,
+                  ),
+                  bottomRight: Radius.circular(
+                    Sizes.size5,
+                  ),
+                ),
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -216,12 +241,16 @@ class _ActivityScreenState extends State<ActivityScreen>
                     ListTile(
                       title: Row(
                         children: [
-                          FaIcon(tab['icon'],
-                              color: Colors.black, size: Sizes.size16),
+                          Icon(
+                            tab["icon"],
+                            size: Sizes.size16,
+                          ),
                           Gaps.h20,
                           Text(
-                            tab['title'],
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            tab["title"],
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),

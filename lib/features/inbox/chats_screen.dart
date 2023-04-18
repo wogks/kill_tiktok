@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kill_tiktok/common/widgets/main_navigation/main_navigation_screen.dart';
 
 import '../../constants/sizes.dart';
+import 'chat_detail_screen.dart';
 
 class ChatsScreen extends StatefulWidget {
   static const String routeName = "chats";
@@ -50,8 +50,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
 
   void _onChatTap(int index) {
     context.pushNamed(
-      MainNavigationScreen.routeName,
-      // ChatDetailScreen.routeName,
+      ChatDetailScreen.routeName,
       params: {"chatId": "$index"},
     );
   }

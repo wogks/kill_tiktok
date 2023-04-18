@@ -1,46 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kill_tiktok/constants/gaps.dart';
-import 'package:kill_tiktok/constants/sizes.dart';
 import 'package:kill_tiktok/features/authentication/user_name_screen.dart';
-
+import 'package:kill_tiktok/features/authentication/view_models/social_auth_view_model.dart';
 import 'package:kill_tiktok/features/authentication/widgets/auth_button.dart';
-import 'package:kill_tiktok/utils.dart';
 
+import '../../constants/gaps.dart';
+import '../../constants/sizes.dart';
+import '../../generated/l10n.dart';
+import '../../utils.dart';
 import 'login_screen.dart';
 
-class SignUpScreen extends StatelessWidget {
-  static String routeURL = '/';
-  static String routeName = 'signUp';
+class SignUpScreen extends ConsumerWidget {
+  static const routeURL = "/";
+  static const routeName = "signUp";
   const SignUpScreen({super.key});
 
-  void _onLoginTap(BuildContext context) {
-    //push는 화면위에 화면을 쌓는거라 계속 누르면 무한 뒤로가기가 된다.
+  void _onLoginTap(BuildContext context) async {
     context.pushNamed(LoginScreen.routeName);
   }
 
   void _onEmailTap(BuildContext context) {
-    // Navigator.of(context).push(
-    //   PageRouteBuilder(
-    //       transitionDuration: const Duration(seconds: 1),
-    //       reverseTransitionDuration: const Duration(seconds: 1),
-    //       pageBuilder: (context, animation, secondaryAnimation) =>
-    //           const UsernameScreen(),
-    //       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-    //         final offsetAnimation =
-    //             Tween(begin: const Offset(0, -1), end: Offset.zero)
-    //                 .animate(animation);
-    //                 final opacityAnimation = Tween(
-    //                   begin: 0.5,
-    //                   end: 1.0
-    //                 ).animate(animation);
-    //         return SlideTransition(
-    //           position: offsetAnimation,
-    //           child: FadeTransition(opacity: opacityAnimation, child: child),
-    //         );
-    //       }),
-    // );
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -50,20 +31,28 @@ class SignUpScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    //반응형 위젯
+  Widget build(BuildContext context, WidgetRef ref) {
     return OrientationBuilder(
       builder: (context, orientation) {
-        print(orientation);
+        /* if (orientation == Orientation.landscape) {
+          return const Scaffold(
+            body: Center(
+              child: Text('Plz rotate ur phone.'),
+            ),
+          );
+        } */
         return Scaffold(
           body: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Sizes.size40),
+              padding: const EdgeInsets.symmetric(
+                horizontal: Sizes.size40,
+              ),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Gaps.v80,
                   const Text(
-                    "Sign Up For TikTok",
+                    "Sign up for TikTok",
                     style: TextStyle(
                       fontSize: Sizes.size24,
                       fontWeight: FontWeight.w700,
@@ -73,53 +62,50 @@ class SignUpScreen extends StatelessWidget {
                   Opacity(
                     opacity: 0.7,
                     child: Text(
-                      'Create a profile, follow other accounts, make yout own videos, and more',
-                      style: TextStyle(
+                      S.of(context).signUpSubtitle(19687),
+                      style: const TextStyle(
                         fontSize: Sizes.size16,
-                        color: isDarkMode(context)
-                            ? Colors.grey.shade300
-                            : Colors.black45,
                       ),
                       textAlign: TextAlign.center,
                     ),
                   ),
                   Gaps.v40,
-                  if (orientation == Orientation.portrait)
-                    //제스처디텍터 두개를 모두 콜렉션if로 넣으려면 리스트로 감싸고 ...을 쓴다
-                    ...[
+                  if (orientation == Orientation.portrait) ...[
                     GestureDetector(
                       onTap: () => _onEmailTap(context),
                       child: const AuthButton(
-                          icon: FaIcon(FontAwesomeIcons.user),
-                          text: 'Use email & password'),
+                        icon: FaIcon(FontAwesomeIcons.user),
+                        text: "Use email & password",
+                      ),
                     ),
                     Gaps.v16,
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () => ref
+                          .read(socialAuthProvider.notifier)
+                          .githubSingIn(context),
                       child: const AuthButton(
-                          icon: FaIcon(FontAwesomeIcons.apple),
-                          text: 'Continue with Apple'),
+                        icon: FaIcon(FontAwesomeIcons.github),
+                        text: "Continue with Github",
+                      ),
                     ),
                   ],
                   if (orientation == Orientation.landscape)
                     Row(
                       children: [
-                        //넓이가 무한이라서 expanded로 감싸준다
                         Expanded(
                           child: GestureDetector(
                             onTap: () => _onEmailTap(context),
-                            child: const AuthButton(
-                                icon: FaIcon(FontAwesomeIcons.user),
-                                text: 'Use email & password'),
+                            child: AuthButton(
+                              icon: const FaIcon(FontAwesomeIcons.user),
+                              text: S.of(context).emailPasswordButton,
+                            ),
                           ),
                         ),
                         Gaps.h16,
                         Expanded(
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: const AuthButton(
-                                icon: FaIcon(FontAwesomeIcons.apple),
-                                text: 'Continue with Apple'),
+                          child: AuthButton(
+                            icon: const FaIcon(FontAwesomeIcons.apple),
+                            text: S.of(context).appleButton,
                           ),
                         )
                       ],
@@ -128,24 +114,34 @@ class SignUpScreen extends StatelessWidget {
               ),
             ),
           ),
-          bottomNavigationBar: BottomAppBar(
-            elevation: 1,
-            //아주 옅은 검정
-            color: isDarkMode(context) ? null : Colors.grey.shade50,
+          bottomNavigationBar: Container(
+            color: isDarkMode(context)
+                ? Theme.of(context).appBarTheme.backgroundColor
+                : Colors.grey.shade50,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: Sizes.size32),
+              padding: const EdgeInsets.only(
+                top: Sizes.size32,
+                bottom: Sizes.size64,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Already have an account?'),
+                  Text(
+                    S.of(context).alreadyHaveAnAccount,
+                    style: const TextStyle(
+                      fontSize: Sizes.size16,
+                    ),
+                  ),
                   Gaps.h5,
                   GestureDetector(
                     onTap: () => _onLoginTap(context),
                     child: Text(
-                      'Log in',
+                      "Log in",
                       style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.w600),
+                        fontSize: Sizes.size16,
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).primaryColor,
+                      ),
                     ),
                   ),
                 ],

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:kill_tiktok/constants/gaps.dart';
 import 'package:kill_tiktok/features/authentication/view_models/login_view_model.dart';
 import 'package:kill_tiktok/features/authentication/widgets/form_button.dart';
 
+import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
 
 class LoginFormScreen extends ConsumerStatefulWidget {
@@ -15,82 +14,99 @@ class LoginFormScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginFormScreenState extends ConsumerState<LoginFormScreen> {
-  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
-
-  void _onSubmitTap() {
-    //formkey를 통해 currentstate에 접근한다
-    //validate: currentState가 있을수도 없을수도 있기 때문에 아무렇게나 접근 불가능(널체크 해야한다)
-
-    //널체크를 통해 메서드 호출
-    // if (_formkey.currentState != null) {
-    //   _formkey.currentState!.validate();
-    // }
-
-    //커런트 스테이트가 있으면 발리데이트를 해라 하는 방법 없으면 아무것도 하지마라
-    //_formkey.currentState?.validate();
-
-    if (_formkey.currentState != null) {
-      if (_formkey.currentState!.validate()) {
-        _formkey.currentState!.save();
-        ref
-            .read(loginProvider.notifier)
-            .login(formData['email']!, formData['password']!, context);
-        //푸시는 화면위에 새 화면을 쌓는 위젯이다. 로그인 한후 다시 로그인화면으로 못돌아가게 리무브언틸을 써준다
-        context.go("/home");
-      }
-      //print(formData.values);
-    }
-  }
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Map<String, String> formData = {};
+
+  void _onSubmitTap() {
+    if (_formKey.currentState != null) {
+      if (_formKey.currentState!.validate()) {
+        _formKey.currentState!.save();
+        ref.read(loginProvider.notifier).login(
+              formData["email"]!,
+              formData["password"]!,
+              context,
+            );
+        // context.goNamed(InterestsScreen.routeName);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('login'),
+        title: const Text('Log in'),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Sizes.size36),
+        padding: const EdgeInsets.symmetric(
+          horizontal: Sizes.size36,
+        ),
         child: Form(
-          key: _formkey,
+          key: _formKey,
           child: Column(
             children: [
               Gaps.v28,
               TextFormField(
+                decoration: InputDecoration(
+                  hintText: 'Email',
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.grey.shade400,
+                    ),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.grey.shade400,
+                    ),
+                  ),
+                ),
+                validator: (value) {
+                  if (value != null && value.isEmpty) {
+                    return "Plase write your email";
+                  }
+                  return null;
+                },
                 onSaved: (newValue) {
                   if (newValue != null) {
                     formData['email'] = newValue;
                   }
                 },
-                decoration: const InputDecoration(hintText: 'Email'),
-                validator: (value) {
-                  return null;
-                },
               ),
               Gaps.v16,
               TextFormField(
+                decoration: InputDecoration(
+                  hintText: 'Password',
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.grey.shade400,
+                    ),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.grey.shade400,
+                    ),
+                  ),
+                ),
+                validator: (value) {
+                  if (value != null && value.isEmpty) {
+                    return "Plase write your password";
+                  }
+                  return null;
+                },
                 onSaved: (newValue) {
                   if (newValue != null) {
                     formData['password'] = newValue;
                   }
                 },
-                decoration: const InputDecoration(hintText: 'password'),
-                validator: (value) {
-                  // if(value!.isNotEmpty) {
-                  //   if(value.length<3) {
-                  //     return 'error';
-                  //   }
-                  //   return null;
-                  // }
-                  return null;
-                },
               ),
               Gaps.v28,
               GestureDetector(
-                  onTap: _onSubmitTap,
-                  child:
-                      FormButton(disabled: ref.watch(loginProvider).isLoading)),
+                onTap: _onSubmitTap,
+                child: FormButton(
+                  disabled: ref.watch(loginProvider).isLoading,
+                ),
+              )
             ],
           ),
         ),

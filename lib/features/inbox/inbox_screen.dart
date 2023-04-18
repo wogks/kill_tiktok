@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kill_tiktok/common/widgets/main_navigation/main_navigation_screen.dart';
-import 'package:kill_tiktok/constants/sizes.dart';
-import 'package:kill_tiktok/features/inbox/activity_screen.dart';
 
-import '../../constants/gaps.dart';
+import '../../constants/sizes.dart';
+import 'activity_screen.dart';
+import 'chats_screen.dart';
 
-class InboxScreen extends StatelessWidget {
+class InboxScreen extends StatefulWidget {
   const InboxScreen({super.key});
 
-  void _onDmPressed(BuildContext context) {
-    context.pushNamed(MainNavigationScreen.routeName);
-    // context.pushNamed(ChatScreen.routeName);
+  @override
+  State<InboxScreen> createState() => _InboxScreenState();
+}
+
+class _InboxScreenState extends State<InboxScreen> {
+  void _onDmPressed() {
+    context.pushNamed(ChatsScreen.routeName);
   }
 
-  void _onActivityTab(BuildContext context) {
+  void _onActivityTap() {
     context.pushNamed(ActivityScreen.routeName);
   }
 
@@ -23,22 +26,28 @@ class InboxScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Inbox'),
         elevation: 1,
+        title: const Text('Inbox'),
         actions: [
           IconButton(
-              onPressed: () => _onDmPressed(context),
-              icon: const FaIcon(FontAwesomeIcons.paperPlane))
+            onPressed: _onDmPressed,
+            icon: const FaIcon(
+              FontAwesomeIcons.paperPlane,
+              size: Sizes.size20,
+            ),
+          )
         ],
       ),
       body: ListView(
         children: [
           ListTile(
-            onTap: () => _onActivityTab(context),
+            onTap: _onActivityTap,
             title: const Text(
-              'activity',
+              'Activity',
               style: TextStyle(
-                  fontWeight: FontWeight.w600, fontSize: Sizes.size16),
+                fontWeight: FontWeight.w600,
+                fontSize: Sizes.size16,
+              ),
             ),
             trailing: const FaIcon(
               FontAwesomeIcons.chevronRight,
@@ -46,13 +55,17 @@ class InboxScreen extends StatelessWidget {
               color: Colors.black,
             ),
           ),
-          Container(height: Sizes.size1, color: Colors.grey.shade200),
-          Gaps.v8,
+          Container(
+            height: Sizes.size1,
+            color: Colors.grey.shade200,
+          ),
           ListTile(
             leading: Container(
               width: Sizes.size52,
               decoration: const BoxDecoration(
-                  shape: BoxShape.circle, color: Colors.blue),
+                shape: BoxShape.circle,
+                color: Colors.blue,
+              ),
               child: const Center(
                 child: FaIcon(
                   FontAwesomeIcons.users,
@@ -61,20 +74,24 @@ class InboxScreen extends StatelessWidget {
               ),
             ),
             title: const Text(
-              'new followers',
+              'New followers',
               style: TextStyle(
-                  fontWeight: FontWeight.w600, fontSize: Sizes.size16),
+                fontWeight: FontWeight.w600,
+                fontSize: Sizes.size16,
+              ),
             ),
             subtitle: const Text(
-              'messages from followers will appear here',
-              style: TextStyle(fontSize: Sizes.size14),
+              'Messages from followers will appear here.',
+              style: TextStyle(
+                fontSize: Sizes.size14,
+              ),
             ),
             trailing: const FaIcon(
               FontAwesomeIcons.chevronRight,
-              size: Sizes.size20,
+              size: Sizes.size14,
               color: Colors.black,
             ),
-          ),
+          )
         ],
       ),
     );
