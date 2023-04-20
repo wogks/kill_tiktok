@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kill_tiktok/features/notifications/notifications_provider.dart';
 import 'package:kill_tiktok/features/videos/repositories/video_playback_config_repo.dart';
 import 'package:kill_tiktok/features/videos/view_models/playback_config_vm.dart';
 import 'package:kill_tiktok/firebase_options.dart';
@@ -43,6 +44,7 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(notificationsProvider);
     return MaterialApp.router(
       routerConfig: ref.watch(routerProvider),
       debugShowCheckedModeBanner: false,

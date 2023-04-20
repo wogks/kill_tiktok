@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../authentication/repos/authen_repository.dart';
 import '../models/user_profile_model.dart';
 import '../repos/user_repo.dart';
