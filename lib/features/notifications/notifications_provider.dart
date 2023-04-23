@@ -20,9 +20,21 @@ class NotificationsProvider extends AsyncNotifier {
     if (permission.authorizationStatus == AuthorizationStatus.denied) {
       return;
     }
+    //foreground
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
       print('포그라운드에서 메세지받음');
     });
+
+    //background
+    FirebaseMessaging.onMessageOpenedApp.listen((notification) {
+      print(notification.data['screen']);
+    });
+
+    //terminated
+    final notification = await _messaging.getInitialMessage();
+    if (notification != null) {
+      print(notification.data['screen']);
+    }
   }
 
   @override
